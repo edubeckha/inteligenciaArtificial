@@ -7,24 +7,33 @@ package visao;
 
 import java.awt.Color;
 import java.awt.ComponentOrientation;
+import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 import modelo.CasaDoTabuleiro;
 import modelo.Constantes;
 
-public class Tabuleiro extends javax.swing.JFrame implements ActionListener {
+public class TelaGomoku extends javax.swing.JFrame implements ActionListener {
 
     public boolean vezHumano;
-    CasaDoTabuleiro[][] casasDoTabuleiro = new CasaDoTabuleiro[15][15];
+    
     int linhas = 15, colunas = 15;
 
-    public Tabuleiro(boolean vHumano) {
+    public TelaGomoku(boolean vHumano) {
         initComponents();
         vezHumano = vHumano;
+        
+        
         painel.setLayout(new GridLayout(linhas, colunas));
         painel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+        
+        
+        
         CasaDoTabuleiro aux;
         for (int x = 0; x < linhas; x++) {
             for (int y = 0; y < colunas; y++) {
@@ -58,7 +67,7 @@ public class Tabuleiro extends javax.swing.JFrame implements ActionListener {
                 contador = 1;
             }
             if (contador >= 5) {
-                resultado("passou aqui");
+                resultado(casaClicada.ehDoHumano() ? Constantes.venceu : Constantes.perdeu);
                 return;
             }
         }
@@ -71,7 +80,7 @@ public class Tabuleiro extends javax.swing.JFrame implements ActionListener {
                 contador = 1;
             }
             if (contador >= 5) {
-                resultado("PASSOU AQ");
+                resultado(casaClicada.ehDoHumano() ? Constantes.venceu : Constantes.perdeu);
                 return;
             }
         }
@@ -94,7 +103,7 @@ public class Tabuleiro extends javax.swing.JFrame implements ActionListener {
             aux_x_diagonal++;
             aux_y_diagonal++;
             if (contador >= 5) {
-                resultado("passou na diagonal");
+                resultado(casaClicada.ehDoHumano() ? Constantes.venceu : Constantes.perdeu);
                 return;
             }
         }
@@ -114,7 +123,7 @@ public class Tabuleiro extends javax.swing.JFrame implements ActionListener {
             aux_x_diagonal--;
             aux_y_diagonal++;
             if (contador >= 5) {
-                resultado("passou na diagonal");
+                resultado(casaClicada.ehDoHumano() ? Constantes.venceu : Constantes.perdeu);
                 return;
             }
         }
@@ -123,12 +132,16 @@ public class Tabuleiro extends javax.swing.JFrame implements ActionListener {
 
     public void resultado(String resultado) {
         JOptionPane.showMessageDialog(this, resultado);
-    }
+        String s = JOptionPane.showInputDialog(this, "Deseja jogar novamente?");
+        if (s.equals("s")) {
+            setVisible(false);
+            new TelaInicial().setVisible(true);
+            return;
+        }
+        setVisible(false);
+        dispose();
+        
 
-    class MeuContadorEspecialFofinho {
-
-        public int count = 1;
-        public Color cor;
     }
 
     /**
@@ -187,18 +200,22 @@ public class Tabuleiro extends javax.swing.JFrame implements ActionListener {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Tabuleiro.class
+            java.util.logging.Logger.getLogger(TelaGomoku.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Tabuleiro.class
+            java.util.logging.Logger.getLogger(TelaGomoku.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Tabuleiro.class
+            java.util.logging.Logger.getLogger(TelaGomoku.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Tabuleiro.class
+            java.util.logging.Logger.getLogger(TelaGomoku.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -207,7 +224,7 @@ public class Tabuleiro extends javax.swing.JFrame implements ActionListener {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Tabuleiro(false).setVisible(true);
+                new TelaGomoku(false).setVisible(true);
             }
         });
     }

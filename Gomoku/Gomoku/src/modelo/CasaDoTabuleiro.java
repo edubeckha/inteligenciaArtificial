@@ -11,12 +11,15 @@ public class CasaDoTabuleiro extends JButton {
     
     public Color cor;
     public int x, y;
-    
     public CasaDoTabuleiro(int x, int y){
         this.x = x;
         this.y = y;
         cor = Color.GRAY;
         setBackground(cor);
+    }
+    
+    public boolean ehDoHumano(){
+        return cor.equals(Color.WHITE);
     }
     
     public boolean estaOcupada(){
@@ -26,6 +29,6 @@ public class CasaDoTabuleiro extends JButton {
     public void adicionaPeca(Color corPeca){
         cor = corPeca;
         setBackground(cor);
-        setText(x + " , " + y);
+        //setText(x + " , " + y);
     }
 }
