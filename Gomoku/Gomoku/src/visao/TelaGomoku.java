@@ -5,134 +5,55 @@
  */
 package visao;
 
-import java.awt.Color;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javafx.scene.paint.Color;
 import javax.swing.JOptionPane;
 import modelo.CasaDoTabuleiro;
 import modelo.Constantes;
+import modelo.Tabuleiro;
 
-public class TelaGomoku extends javax.swing.JFrame implements ActionListener {
+public class TelaGomoku extends javax.swing.JFrame implements ActionListener{
 
-    public boolean vezHumano;
     
+    
+    public boolean vezHumano;
+
     int linhas = 15, colunas = 15;
+   
+    Tabuleiro tabuleiro;
+    
 
     public TelaGomoku(boolean vHumano) {
         initComponents();
         vezHumano = vHumano;
-        
-        
+        tabuleiro = Tabuleiro.retornaInstancia(vezHumano);
+
         painel.setLayout(new GridLayout(linhas, colunas));
         painel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+        setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         
+         CasaDoTabuleiro[][] casasDoTabuleiro = tabuleiro.adicionarCasas();
+         for(int x = 0; x < 15; x++){
+             for(int y = 0; y < 15; y++){
+                 casasDoTabuleiro[x][y].addActionListener(this);
+                 painel.add(casasDoTabuleiro[x][y]);
+             }
+         }
+         
         
-        
-        CasaDoTabuleiro aux;
-        for (int x = 0; x < linhas; x++) {
-            for (int y = 0; y < colunas; y++) {
-                aux = new CasaDoTabuleiro(x, y);
-                aux.addActionListener(this);
-                painel.add(aux);
-                casasDoTabuleiro[x][y] = aux;
-            }
-        }
-    }
-
-    public void realizaJogada(CasaDoTabuleiro casaClicada) {
-        if (casaClicada.cor != Color.gray) {
-            return;
-        }
-        casaClicada.adicionaPeca(vezHumano ? Color.WHITE : Color.BLACK);
-        vezHumano = !vezHumano;
-        verificaTabuleiro(casaClicada);
-    }
-
-    public void verificaTabuleiro(CasaDoTabuleiro casaClicada) {
-        int aux_x = casaClicada.x;
-        int aux_y = casaClicada.y;
-        int contador = 1;
-
-        //verifica na mesma linha
-        for (int y = 0; y < colunas - 1; y++) {
-            if (casasDoTabuleiro[aux_x][y].cor.equals(casasDoTabuleiro[aux_x][y + 1].cor) && casasDoTabuleiro[aux_x][y].estaOcupada()) {
-                contador++;
-            } else {
-                contador = 1;
-            }
-            if (contador >= 5) {
-                resultado(casaClicada.ehDoHumano() ? Constantes.venceu : Constantes.perdeu);
-                return;
-            }
-        }
-
-        //verifica na mesma coluna
-        for (int x = 0; x < linhas - 1; x++) {
-            if (casasDoTabuleiro[x][aux_y].cor.equals(casasDoTabuleiro[x + 1][aux_y].cor) && casasDoTabuleiro[x][aux_y].estaOcupada()) {
-                contador++;
-            } else {
-                contador = 1;
-            }
-            if (contador >= 5) {
-                resultado(casaClicada.ehDoHumano() ? Constantes.venceu : Constantes.perdeu);
-                return;
-            }
-        }
-
-        int aux_x_diagonal = aux_x - 4;
-        int aux_y_diagonal = aux_y - 4;
-
-        //verifica diagonal
-        contador = 1;
-        for (int i = 0; i < 8; i++) {
-            try {
-                if (casasDoTabuleiro[aux_x_diagonal][aux_y_diagonal].cor.equals(casasDoTabuleiro[aux_x_diagonal + 1][aux_y_diagonal + 1].cor) && casasDoTabuleiro[aux_x_diagonal][aux_y_diagonal].estaOcupada()) {
-                    contador++;
-                } else {
-                    contador = 1;
-                }
-            } catch (Exception e) {
-                contador = 1;
-            }
-            aux_x_diagonal++;
-            aux_y_diagonal++;
-            if (contador >= 5) {
-                resultado(casaClicada.ehDoHumano() ? Constantes.venceu : Constantes.perdeu);
-                return;
-            }
-        }
-
-        aux_x_diagonal = aux_x + 4;
-        aux_y_diagonal = aux_y - 4;
-        for (int j = 0; j < 8; j++) {
-            try {
-                if (casasDoTabuleiro[aux_x_diagonal][aux_y_diagonal].cor.equals(casasDoTabuleiro[aux_x_diagonal - 1][aux_y_diagonal + 1].cor) && casasDoTabuleiro[aux_x_diagonal][aux_y_diagonal].estaOcupada()) {
-                    contador++;
-                } else {
-                    contador = 1;
-                }
-            } catch (Exception e) {
-
-            }
-            aux_x_diagonal--;
-            aux_y_diagonal++;
-            if (contador >= 5) {
-                resultado(casaClicada.ehDoHumano() ? Constantes.venceu : Constantes.perdeu);
-                return;
-            }
-        }
 
     }
 
     public void resultado(String resultado) {
         JOptionPane.showMessageDialog(this, resultado);
         String s = JOptionPane.showInputDialog(this, "Deseja jogar novamente?");
+        tabuleiro.limpar();
         if (s.equals("s")) {
             setVisible(false);
             new TelaInicial().setVisible(true);
@@ -140,7 +61,6 @@ public class TelaGomoku extends javax.swing.JFrame implements ActionListener {
         }
         setVisible(false);
         dispose();
-        
 
     }
 
@@ -233,8 +153,15 @@ public class TelaGomoku extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JPanel painel;
     // End of variables declaration//GEN-END:variables
 
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        realizaJogada((CasaDoTabuleiro) e.getSource());
+        CasaDoTabuleiro aux = (CasaDoTabuleiro) e.getSource();
+        if(tabuleiro.realizarJogada(aux)){
+              resultado(aux.ehDoHumano() ? Constantes.venceu : Constantes.perdeu);
+        }
+          
     }
+
+
 }
