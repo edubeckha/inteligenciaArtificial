@@ -18,16 +18,28 @@ public class CasaDoTabuleiro extends JButton {
         setBackground(cor);
     }
     
+    /**
+     * Verifica se a casa pertence ao humano
+     * @return 
+     */
     public boolean ehDoHumano(){
         return cor.equals(Color.WHITE);
     }
     
+    /**
+     * Verifica se a casa ja esta ocupada
+     * @return 
+     */
     public boolean estaOcupada(){
        return !(cor == Color.GRAY);
     }
 
-    public void adicionaPeca(Color corPeca){
-        cor = corPeca;
+    /**
+     * Escolhe esta casa e a pinta com a cor do jogador atual
+     * @param cor 
+     */
+    public void escolherCasa(Color cor){
+        this.cor = cor;
         setBackground(cor);
         //setText(x + " , " + y);
     }

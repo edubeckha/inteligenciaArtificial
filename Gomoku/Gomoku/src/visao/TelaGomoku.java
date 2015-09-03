@@ -5,28 +5,26 @@
  */
 package visao;
 
+import java.awt.Color;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javafx.scene.paint.Color;
 import javax.swing.JOptionPane;
 import modelo.CasaDoTabuleiro;
 import modelo.Constantes;
 import modelo.Tabuleiro;
 
-public class TelaGomoku extends javax.swing.JFrame implements ActionListener{
+public class TelaGomoku extends javax.swing.JFrame implements ActionListener {
 
-    
-    
     public boolean vezHumano;
 
     int linhas = 15, colunas = 15;
-   
+
     Tabuleiro tabuleiro;
-    
+    CasaDoTabuleiro[][] casasDoTabuleiro = new CasaDoTabuleiro[15][15];
 
     public TelaGomoku(boolean vHumano) {
         initComponents();
@@ -37,19 +35,24 @@ public class TelaGomoku extends javax.swing.JFrame implements ActionListener{
         painel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
-        
-         CasaDoTabuleiro[][] casasDoTabuleiro = tabuleiro.adicionarCasas();
-         for(int x = 0; x < 15; x++){
-             for(int y = 0; y < 15; y++){
-                 casasDoTabuleiro[x][y].addActionListener(this);
-                 painel.add(casasDoTabuleiro[x][y]);
-             }
-         }
-         
-        
+
+        tabuleiro.adicionarCasas();
+
+        for (int x = 0; x < 15; x++) {
+            for (int y = 0; y < 15; y++) {
+                casasDoTabuleiro[x][y] = new CasaDoTabuleiro(x, y);
+                casasDoTabuleiro[x][y].addActionListener(this);
+                painel.add(casasDoTabuleiro[x][y]);
+            }
+        }
 
     }
 
+    /**
+     * Mostra o resultado do jogo para o usuário
+     *
+     * @param resultado
+     */
     public void resultado(String resultado) {
         JOptionPane.showMessageDialog(this, resultado);
         String s = JOptionPane.showInputDialog(this, "Deseja jogar novamente?");
@@ -153,15 +156,21 @@ public class TelaGomoku extends javax.swing.JFrame implements ActionListener{
     private javax.swing.JPanel painel;
     // End of variables declaration//GEN-END:variables
 
-
+    /**
+     * Recebe o evento de clique em alguma casa do tabuleiro
+     *
+     * @param e
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         CasaDoTabuleiro aux = (CasaDoTabuleiro) e.getSource();
-        if(tabuleiro.realizarJogada(aux)){
-              resultado(aux.ehDoHumano() ? Constantes.venceu : Constantes.perdeu);
+        if (tabuleiro.realizarJogada(aux.x, aux.y)) {
+           casasDoTabuleiro[aux.x][aux.y].escolherCasa(!tabuleiro.vezHumano ? Color.WHITE : Color.BLACK);
+            if (tabuleiro.verificaTabuleiro(aux.x, aux.y)) {
+                resultado(aux.ehDoHumano() ? Constantes.venceu : Constantes.perdeu);
+            }
         }
-          
-    }
 
+    }
 
 }

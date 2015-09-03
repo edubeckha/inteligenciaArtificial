@@ -1,16 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package modelo;
 
-import java.awt.Color;
 
 public class Tabuleiro {
 
-    boolean vezHumano;
-    CasaDoTabuleiro[][] casasDoTabuleiro = new CasaDoTabuleiro[15][15];
+     public boolean vezHumano;
+    int[][] casasDoTabuleiro = new int[15][15];
     int qttLinhas, qttColunas;
     public static Tabuleiro instancia;
 
@@ -25,37 +19,38 @@ public class Tabuleiro {
         this.vezHumano = vezHumano;
         qttLinhas = 15;
         qttColunas = 15;
+        adicionarCasas();
     }
 
-    public CasaDoTabuleiro[][] adicionarCasas() {
-        CasaDoTabuleiro aux;
+    /**
+     * Adiciona todas as casas na matriz
+     */
+    public final void adicionarCasas() {
+        
         for (int x = 0; x < qttLinhas; x++) {
             for (int y = 0; y < qttColunas; y++) {
-                aux = new CasaDoTabuleiro(x, y);
-                casasDoTabuleiro[x][y] = aux;
+                casasDoTabuleiro[x][y] = 0;
             }
         }
-
-        return casasDoTabuleiro;
     }
 
-    public boolean realizarJogada(CasaDoTabuleiro casaClicada) {
-        if (casaClicada.estaOcupada()) {
+    public boolean realizarJogada(int x, int y) {
+        if (casasDoTabuleiro[x][y] != 0) {
             return false;
         }
-        casaClicada.adicionaPeca(vezHumano ? Color.WHITE : Color.BLACK);
+        casasDoTabuleiro[x][y] = vezHumano ? 1 : 2;
         vezHumano = !vezHumano;
-        return verificaTabuleiro(casaClicada);
+        return true;
     }
 
-    public boolean verificaTabuleiro(CasaDoTabuleiro casaClicada) {
-        int aux_x = casaClicada.x;
-        int aux_y = casaClicada.y;
+    public boolean verificaTabuleiro(int x, int y) {
+        int aux_x = x;
+        int aux_y = y;
         int contador = 1;
 
         //verifica na mesma linha
-        for (int y = 0; y < qttColunas - 1; y++) {
-            if (casasDoTabuleiro[aux_x][y].cor.equals(casasDoTabuleiro[aux_x][y + 1].cor) && casasDoTabuleiro[aux_x][y].estaOcupada()) {
+        for (int i = 0; i < qttColunas - 1; i++) {
+            if (casasDoTabuleiro[aux_x][i] == casasDoTabuleiro[aux_x][i + 1] && casasDoTabuleiro[aux_x][i] != 0) {
                 contador++;
             } else {
                 contador = 1;
@@ -67,8 +62,8 @@ public class Tabuleiro {
         }
 
         //verifica na mesma coluna
-        for (int x = 0; x < qttLinhas - 1; x++) {
-            if (casasDoTabuleiro[x][aux_y].cor.equals(casasDoTabuleiro[x + 1][aux_y].cor) && casasDoTabuleiro[x][aux_y].estaOcupada()) {
+        for (int i = 0; i < qttLinhas - 1; i++) {
+            if (casasDoTabuleiro[i][aux_y] == casasDoTabuleiro[i + 1][aux_y]  && casasDoTabuleiro[i][aux_y] != 0 ) {
                 contador++;
             } else {
                 contador = 1;
@@ -86,7 +81,7 @@ public class Tabuleiro {
         contador = 1;
         for (int i = 0; i < 8; i++) {
             try {
-                if (casasDoTabuleiro[aux_x_diagonal][aux_y_diagonal].cor.equals(casasDoTabuleiro[aux_x_diagonal + 1][aux_y_diagonal + 1].cor) && casasDoTabuleiro[aux_x_diagonal][aux_y_diagonal].estaOcupada()) {
+                if (casasDoTabuleiro[aux_x_diagonal][aux_y_diagonal] == casasDoTabuleiro[aux_x_diagonal + 1][aux_y_diagonal + 1] && casasDoTabuleiro[aux_x_diagonal][aux_y_diagonal] != 0) {
                     contador++;
                 } else {
                     contador = 1;
@@ -105,7 +100,7 @@ public class Tabuleiro {
         aux_y_diagonal = aux_y - 4;
         for (int j = 0; j < 8; j++) {
             try {
-                if (casasDoTabuleiro[aux_x_diagonal][aux_y_diagonal].cor.equals(casasDoTabuleiro[aux_x_diagonal - 1][aux_y_diagonal + 1].cor) && casasDoTabuleiro[aux_x_diagonal][aux_y_diagonal].estaOcupada()) {
+                if (casasDoTabuleiro[aux_x_diagonal][aux_y_diagonal] == casasDoTabuleiro[aux_x_diagonal - 1][aux_y_diagonal + 1] && casasDoTabuleiro[aux_x_diagonal][aux_y_diagonal] != 0) {
                     contador++;
                 } else {
                     contador = 1;
