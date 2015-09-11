@@ -1,0 +1,27 @@
+package minimax;
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ *
+ * @author rr
+ */
+public class FuncaoUtilidade {
+    
+    
+    public double valorNodo(Nodo n,Tabuleiro t){            
+        double random = Math.random();    
+        return 1;
+        /*
+        if(random > 0.5){
+            return +1;
+        }
+            return -1;
+        */
+    }    
+        
+}
