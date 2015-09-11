@@ -14,7 +14,7 @@ public class Arvore {
     public Arvore(){
         raiz = new Nodo(null);
     }
-    
+    /*
     public void descerArvore(Nodo aux){
         while(!aux.ehFolha){ //verifica se o nodo nao eh folha
             for(Nodo nodo : aux.filhos){
@@ -22,5 +22,5 @@ public class Arvore {
             }
         }
         //chegou no nodo folha...fazer aqui o retorno para o pai
-    }
+    }*/
 }
