@@ -65,9 +65,11 @@ public class Nodo {
     public Nodo(int label, boolean turno, boolean folha){
         this.label = label;
         if(turno){
+            //jogada MAX
             this.j = new Jogada(0);
             
         }else{
+            //jogada MIN
             this.j = new Jogada(1);
         }
        

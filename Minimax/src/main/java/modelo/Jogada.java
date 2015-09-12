@@ -10,11 +10,19 @@ package modelo;
  * @author rr
  */
 public class Jogada {
-    public int jogador;
+    public int jogador,idJogada;
+    //public Tabuleiro jogadaRealizada;
     
-    public Jogada(int _jogador){
+    public Jogada(int _jogador, int _idJogada){
+        this.idJogada = _idJogada;
         this.jogador = _jogador;
     }
+    
+    public Jogada(int _jogador){
+     
+        this.jogador = _jogador;
+    }
+    
         
     
 }
