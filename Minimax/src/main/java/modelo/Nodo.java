@@ -40,7 +40,7 @@ public class Nodo {
     private Nodo pai;
     private boolean folha = false;
     private boolean raiz = false;
-    private double valor = 0;
+    private double valor;
     private Jogada j;
     
     public Nodo(int label, Nodo pai){
@@ -67,10 +67,12 @@ public class Nodo {
         if(turno){
             //jogada MAX
             this.j = new Jogada(0);
+            valor = Integer.MIN_VALUE;
             
         }else{
             //jogada MIN
             this.j = new Jogada(1);
+            valor = Integer.MAX_VALUE;
         }
        
         
@@ -103,6 +105,11 @@ public class Nodo {
     }
     public double getValor(){
         return this.valor;
+    }
+
+    boolean getJogadorAtual() {
+        //se valor == 0, entao é a IA, se nao o humano
+        return this.j.jogador == 0;
     }
     
     

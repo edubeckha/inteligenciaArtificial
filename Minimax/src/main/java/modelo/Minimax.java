@@ -42,13 +42,20 @@ public class Minimax {
                  * Quando a volta da recursão ocorrer deve-se atualizar os valores de cada nodo.
                  * A primeira condicao serve para atualizar os valores de MAX(IA), já a segunda para atualizar o MIN(Humano)
                  */
+              
+                boolean jogadorAtual = t.getJogadorAtual();              
+                
+                t.setJogadorAtual(!jogadorAtual);
+                Nodo novoNodo;
                 for (int i = 0; i < 2; i++) {
                     
                     turno++;
-                    t.setJogadorAtual(!t.getJogadorAtual());
-                    Nodo novoNodo = new Nodo(turno, t.getJogadorAtual(), false);
+                    //ao inves de pegar o jogador do tabuleiro, seria melhor inverter o jogador do nodo pai do novoNodo?
+                    System.out.println("proximo jogador : "+!n.getJogadorAtual());
+                    novoNodo = new Nodo(turno, !n.getJogadorAtual(), false);
                     novoNodo.setFolha(false);
                     novoNodo.setRaiz(false);
+                    novoNodo.setPai(n);
                     n.setFilho(novoNodo);
                     int profundidadeAnterior = profundidadeAtual;
                     
@@ -58,19 +65,22 @@ public class Minimax {
                     profundidadeAtual = profundidadeAnterior;
                 //retorno da arvore, onde os valores sao atualizados
 
-                    if (n.getValor() < novoNodo.getValor() && novoNodo.getJogador() == 0) {
+                    if (n.getValor() < novoNodo.getValor() && n.getJogador() == 0) {
                         n.setValor(novoNodo.getValor());
-                        t.setJogadorAtual(!t.getJogadorAtual());
 
                     } else {
-                        if (n.getValor() > novoNodo.getValor() && novoNodo.getJogador() == 1) {
+                        double resto = +n.getValor()-novoNodo.getValor();
+                        System.out.println("comparacao: "+n.getValor() +"\n NOVOnODO : "+novoNodo.getValor()+"\n sub: "+resto);
+                        if (n.getValor() >= novoNodo.getValor() && n.getJogador() == 1) {
                             n.setValor(novoNodo.getValor());
-                            t.setJogadorAtual(!t.getJogadorAtual());
+
 
                         }
                     }
 
                 }
+                t.setJogadorAtual(!jogadorAtual);
+
 
             }
 
@@ -81,8 +91,11 @@ public class Minimax {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Nodo n = new Nodo(0, true);
-        Minimax m = new Minimax(1);
+        
+        Minimax m = new Minimax(2);
+        Jogada j = new Jogada(0);
+        
+        Nodo n = new Nodo(0, true,false);
         Tabuleiro t = new Tabuleiro(3, 3);
         t.setJogadorAtual(true);
         m.minimax(n, n, t, 0);

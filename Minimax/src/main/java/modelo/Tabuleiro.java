@@ -27,6 +27,7 @@ public class Tabuleiro {
     }
 
     public void setJogadorAtual(boolean valor){
+        System.out.println("valor "+valor);
         this.jogadorAtual = valor;
     }
 
