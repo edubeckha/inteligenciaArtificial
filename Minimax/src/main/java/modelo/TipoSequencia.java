@@ -25,7 +25,15 @@ public enum TipoSequencia {
     private TipoSequencia(int valor){
         retornaTipoAPartirDeValor(valor);
     }
+    private TipoSequencia(int valor,int turno){
+        retornaTipoAPartirDeValor(valor);
+    }
+    
     public TipoSequencia retornaTipoAPartirDeValor(int valor){
+        return null;
+    }
+    
+    public TipoSequencia retornaTipoAPartirDeValor(int valor, int turno){
         return null;
     }
 /*
