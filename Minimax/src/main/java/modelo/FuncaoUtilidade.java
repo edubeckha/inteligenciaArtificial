@@ -11,11 +11,13 @@ package modelo;
  * @author rr
  */
 public class FuncaoUtilidade {
+    private int counter = 4;
     
     
     public double valorNodo(Nodo n,Tabuleiro t){            
-        double random = Math.random();    
-        return 1;
+        double c = counter;
+        counter--;
+        return c;
         /*
         if(random > 0.5){
             return +1;

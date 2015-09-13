@@ -9,33 +9,11 @@ import java.util.List;
  * and open the template in the editor.
  */
 
-/**
- *  int label,alfa,beta = 0;
-    bool folha = false;
-    std::vector <std::shared_ptr<Nodo>> filhos;
-    std::shared_ptr<Nodo> pai;
-    bool raiz = false;
-    //seria ideal passar apenas a coordenada das casas ocupadas por esse nodo?
-    std::shared_ptr<Tabuleiro> tabuleiro;
-    //no lugar de passar um tabuleiro, é mais fácil passar um valor que representa a jogada atual.
-    double valor = 0;
-    Nodo(int label, Nodo pai);
-    Nodo(int label);
-    Nodo(int label, bool raiz);
-    Nodo(const Nodo& orig);
-    //virtual ~Nodo();
-    void setFilho(std::shared_ptr<Nodo> filho);
-    void setFilho(Nodo filho);
-    void setFilhos(std::vector<std::shared_ptr<Nodo>> filhos);
-    bool ehFolha();
-    bool ehRaiz();
-    void setNota(double nota);
-    void setPai(Nodo pai);
   
- * @author rr
- */
 public class Nodo {
-    private int label,alfa,beta;
+    private int label;
+    private double alfa = Integer.MIN_VALUE;
+    private double beta = Integer.MAX_VALUE;
     private List<Nodo> filhos = new ArrayList<>();
     private Nodo pai;
     private boolean folha = false;
@@ -65,7 +43,7 @@ public class Nodo {
     public Nodo(int label, boolean turno, boolean folha){
         this.label = label;
         if(turno){
-            //jogada MAX
+            //jogada MAX            
             this.j = new Jogada(0);
             valor = Integer.MIN_VALUE;
             
@@ -110,6 +88,22 @@ public class Nodo {
     boolean getJogadorAtual() {
         //se valor == 0, entao é a IA, se nao o humano
         return this.j.jogador == 0;
+    }
+
+    double getAlfa() {
+        return alfa;
+    }
+    
+    double getBeta() {
+        return beta;
+    }
+
+    void setAlfa(double d) {
+        this.alfa = d;
+    }
+
+    void setBeta(double d) {
+        this.beta = d;
     }
     
     
