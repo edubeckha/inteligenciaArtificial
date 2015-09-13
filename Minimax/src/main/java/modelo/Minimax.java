@@ -80,6 +80,7 @@ public class Minimax {
                             n.setValor(novoNodo.getValor());
                         }
                         if (n.getBeta() < n.getAlfa()) {
+                            System.out.println("poda beta");
                             break;
                         }
 
@@ -120,7 +121,7 @@ public class Minimax {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+  /*  public static void main(String[] args) {
 
         Minimax m = new Minimax(2);
         Jogada j = new Jogada(0);
@@ -131,6 +132,6 @@ public class Minimax {
         t.setJogadorAtual(true);
         m.minimax(n, n, t, 0);
 
-    }
+    }*/
 
 }
