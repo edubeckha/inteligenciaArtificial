@@ -28,6 +28,7 @@ public class Nodo {
     }
     public Nodo(String s){
         this.labelFinal = s;
+        
     }
     public Nodo(int label, boolean raiz){
         this.label = label;
@@ -46,6 +47,7 @@ public class Nodo {
     }
     public Nodo(int label, boolean turno, boolean folha){
         this.label = label;
+        /*
         if(turno){
             //jogada MAX            
             this.j = new Jogada(0);
@@ -55,12 +57,13 @@ public class Nodo {
             //jogada MIN
             this.j = new Jogada(1);
             valor = Integer.MAX_VALUE;
-        }
+        }*/
+        this.setValor(turno);
        
         
     }
     public Nodo(Nodo n){
-        //clonar o objeto
+        
     }
     //obtem label do filho a partir do nodo passado por parametro. Verificar se é melhor passar por referencia ou realizar copia.
     public void setFilho(Nodo n){
@@ -78,6 +81,19 @@ public class Nodo {
     }
     public void setValor(double valor){
         this.valor = valor;
+    }
+    public void setValor(boolean vezJogada){
+         if(vezJogada){
+            //jogada MAX            
+            this.j = new Jogada(0);
+            valor = Integer.MIN_VALUE;
+            
+        }else{
+            //jogada MIN
+            this.j = new Jogada(1);
+            valor = Integer.MAX_VALUE;
+        }
+        
     }
     public void setFolha(boolean valor){
         this.folha = valor;

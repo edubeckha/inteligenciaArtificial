@@ -41,28 +41,22 @@ public class GeradorJogada {
         ArrayList<Nodo> jogadasHorizontais = new ArrayList<>();
         ArrayList<Nodo> jogadasDiagonalPrincipal = new ArrayList<>();
         ArrayList<Nodo> jogadasDiagonalSecundaria = new ArrayList<>();
-
+        ArrayList<Nodo> jogadas = new ArrayList<>();
+        jogadasHorizontais = gerarJogadasHorizontal(tabTemp, anterior);
+        jogadasVerticais = gerarJogadasVertical(tabTemp, anterior);
+        jogadasDiagonalPrincipal = gerarJogadasDiagonalPrincipal(tabTemp, anterior);
+        
+        jogadas.addAll(jogadasVerticais);
+        jogadas.addAll(jogadasHorizontais);
+        jogadas.addAll(jogadasDiagonalPrincipal);
+        
+        return jogadas;
         //colocar threads para realizar as verificacoes em todas as posicoes
         /*
          (x-3,y),(x-2,y),(x-1,y)  <- (x,y) -> (x+1,y), (x+2,y), (x+3,y)
         
          */
-        while (areaJogadaAux < this.alcanceMaximo) {
-            coordenadaLinha = anterior.j.linhaOrigem - areaJogadaAux;
-            coordenadaColuna = anterior.j.colunaOrigem - areaJogadaAux;
-
-            jogadasHorizontais = gerarJogadasHorizontal(tabTemp, anterior);
-
-            if ((coordenadaLinha) >= 0 && (coordenadaColuna) >= 0) {//diagonal principal
-                //se a condicao acima for verdadeira, entao existe a possibilidade de criar uma jogada.
-                //    jogadasDiagonalPrincipal = gerarJogadasDiagonalPrincipal(tabTemp,anterior.getJogador());
-            }
-
-            areaJogadaAux++;
-        }
-
-        return null;
-
+        
     }
     //modo XGH on
     private ArrayList<Nodo> gerarJogadasHorizontal(int[][] tab, Nodo anterior) {
@@ -186,7 +180,7 @@ public class GeradorJogada {
                 //posicao nao é negativa e ninguem jogou naquela posicao
                 if (tab[coordenadaDec][coordenadaDec] == 0) {
                     Nodo nodo = new Nodo(coordenadaDec + " " + coordenadaDec);
-                    tab[coordenadaDec][coordenadaDec] = anterior.j.obterProximoJogador();
+                    tab[coordenadaDec][coordenadaDec] = anterior.j.obterProximoJogador();                    
                     nodo.j = new Jogada(tab, anterior.j.obterProximoJogador(), coordenadaDec, coordenadaDec);
                     jogadasValidas.add(nodo);
 
@@ -258,22 +252,23 @@ public class GeradorJogada {
     }*/
     
 
-    /*TODO: mudar metodos para algo mais generico e terminar de fazer metodo para diagonal secundaria.*/
+    /*TODO: mudar metodos para algo mais generico e terminar de fazer metodo para diagonal secundaria.
 
     public static void main(String[] args) {
-        GeradorJogada gj = new GeradorJogada(8);
+        GeradorJogada gj = new GeradorJogada(15);
         Nodo raiz = new Nodo(1, true);
         Jogada j = new Jogada(2);
-        j.colunaOrigem = 0;
-        j.linhaOrigem = 0;
+        j.colunaOrigem = 7;
+        j.linhaOrigem = 7;
         raiz.j = j;
-        Tabuleiro t = new Tabuleiro(8, 8, true);
+        Tabuleiro t = new Tabuleiro(15, 15, true);
         //t.realizarJogada(0, 6);
         //t.realizarJogada(0, 3);
 //        gj.gerarJogadasVertical(t.casasDoTabuleiro, raiz);
 //        gj.gerarJogadasHorizontal(t.casasDoTabuleiro, raiz);
-        gj.gerarJogadasDiagonalPrincipal(t.casasDoTabuleiro, raiz);
+      //  gj.gerarJogadasDiagonalPrincipal(t.casasDoTabuleiro, raiz);
+        gj.criaJogada(t, raiz);
 
-    }
+    }*/
 
 }
