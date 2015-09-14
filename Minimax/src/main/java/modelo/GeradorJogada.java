@@ -258,7 +258,7 @@ public class GeradorJogada {
     }*/
     
 
-    
+    /*TODO: mudar metodos para algo mais generico e terminar de fazer metodo para diagonal secundaria.*/
 
     public static void main(String[] args) {
         GeradorJogada gj = new GeradorJogada(8);
