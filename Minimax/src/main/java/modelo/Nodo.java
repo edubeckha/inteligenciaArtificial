@@ -12,6 +12,7 @@ import java.util.List;
   
 public class Nodo {
     private int label;
+    private String labelFinal;
     private double alfa = Integer.MIN_VALUE;
     private double beta = Integer.MAX_VALUE;
     private List<Nodo> filhos = new ArrayList<>();
@@ -19,11 +20,14 @@ public class Nodo {
     private boolean folha = false;
     private boolean raiz = false;
     private double valor;
-    private Jogada j;
+    public Jogada j;
     
     public Nodo(int label, Nodo pai){
         this.label = label;
         this.pai = pai;
+    }
+    public Nodo(String s){
+        this.labelFinal = s;
     }
     public Nodo(int label, boolean raiz){
         this.label = label;

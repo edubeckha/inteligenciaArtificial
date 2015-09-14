@@ -39,6 +39,7 @@ public class Sequencia {
 
         return null;
     }
+    /*
 
     public static void main(String[] args) {
         int[][] matriz = new int[4][4];
@@ -67,6 +68,6 @@ public class Sequencia {
 
         sequencia.verificaCasas(4, matriz);
 
-    }
+    }*/
 
 }

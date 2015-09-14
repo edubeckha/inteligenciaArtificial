@@ -5,6 +5,8 @@
  */
 package modelo;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author rr
@@ -19,7 +21,7 @@ public class Minimax {
     public Minimax(int profundidade) {
         this.profundidadeMaxima = profundidade;
         this.f = new FuncaoUtilidade();
-        this.gj = new GeradorJogada();
+        this.gj = new GeradorJogada(15);
 
     }
 
@@ -44,6 +46,8 @@ public class Minimax {
 
                 t.setJogadorAtual(!jogadorAtual);
                 Nodo novoNodo;
+                ArrayList<Nodo> nodos = new ArrayList<>();
+              //  nodos = gj.criarJogada(turno);
                 for (int i = 0; i < 2; i++) {
                     //turno só deveria ser atualizado antes do for.    
                     turno++;
