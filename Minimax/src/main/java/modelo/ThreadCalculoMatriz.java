@@ -61,13 +61,33 @@ public class ThreadCalculoMatriz extends Thread {
     }
 
     private void iteraDiagonalPrincipal() {
-        for (int i = 0; i < ordem; i++) {
-            verificaMatriz(i, i, matrizElementos);
+         int linha, coluna;
+       /* for (int i = 0; i < ordem; i++) {
+            linha = 0;
+            coluna = (ordem - 1 - i);
+            for (int j = 0; j < i + 1; j++) {
+                verificaMatriz(linha++, coluna++, matrizElementos);
+            }
+            
         }
-
+        */
+        
+         for (int i = 0; i < ordem; i++) {
+            linha = (ordem - 1 - i);
+            coluna = 0;
+            int teste = ordem - linha;
+            
+            for (int j = 0; j < teste; j++) {
+                verificaMatriz(linha++, coluna++, matrizElementos);
+            }
+            
+        }
         System.out.println("humano Diagonal Principal " + melhorSequenciaHumano);
         System.out.println("IA Diagonal Principal" + melhorSequenciaIA);
     }
+    
+    
+    
 
     //TODO: fazer depois
     private void iteraDiagonalSecundaria() {
@@ -75,7 +95,7 @@ public class ThreadCalculoMatriz extends Thread {
         for (int i = 0; i < ordem; i++) {
             linha = i;
             for (int j = 0; j < i + 1; j++) {
-                //verificaMatriz(linha--, ++coluna, matrizElementos);
+                verificaMatriz(linha--, ++coluna, matrizElementos);
             }
             coluna = -1;
         }
