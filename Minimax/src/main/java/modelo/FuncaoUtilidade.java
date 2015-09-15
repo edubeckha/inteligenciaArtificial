@@ -13,13 +13,24 @@ package modelo;
 public class FuncaoUtilidade {
    Sequencia sequencia;
    public int valorFuncaoUtilidade;
+   
     
     public FuncaoUtilidade(){
         sequencia = new Sequencia();
     }
     public double valorNodo(Nodo n,Tabuleiro t){            
-        n.setValor(sequencia.retornaMelhorSequenciaIA().retornaValorSequencia() - sequencia.retornaMelhorSequenciaHumano().retornaValorSequencia());
-     return 0;
+    /*n.setValor(sequencia.retornaMelhorSequenciaIA().retornaValorSequencia() - sequencia.retornaMelhorSequenciaHumano().retornaValorSequencia());
+     return 0;*/
+        this.sequencia.verificaCasas(n.j.posicaoJogada.length, n.j.posicaoJogada);
+        return sequencia.retornaMelhorSequenciaIA().retornaValorSequencia() - sequencia.retornaMelhorSequenciaHumano().retornaValorSequencia();
+    }    
+    public double valorNodo(Nodo n,int turnoAtual){            
+    /*n.setValor(sequencia.retornaMelhorSequenciaIA().retornaValorSequencia() - sequencia.retornaMelhorSequenciaHumano().retornaValorSequencia());
+     return 0;*/
+        this.sequencia.verificaCasas(n.j.posicaoJogada.length, n.j.posicaoJogada);
+        return sequencia.retornaMelhorSequenciaIA().retornaValorSequencia() - sequencia.retornaMelhorSequenciaHumano().retornaValorSequencia();
+        //return sequencia.retornaMelhorSequenciaIA().retornaValorSequencia() - sequencia.retornaMelhorSequenciaHumano().retornaValorSequencia() - turnoAtual;
+        //return 1;
     }    
         
 }

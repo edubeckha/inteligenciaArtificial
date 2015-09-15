@@ -47,20 +47,28 @@ public class Nodo {
     }
     public Nodo(int label, boolean turno, boolean folha){
         this.label = label;
-        /*
+        
         if(turno){
             //jogada MAX            
-            this.j = new Jogada(0);
-            valor = Integer.MIN_VALUE;
+            this.j = new Jogada(1);
+            valor = Integer.MIN_VALUE+1;
             
         }else{
             //jogada MIN
-            this.j = new Jogada(1);
-            valor = Integer.MAX_VALUE;
-        }*/
-        this.setValor(turno);
+            this.j = new Jogada(2);
+            valor = Integer.MAX_VALUE-1;
+        }
+        
        
         
+    }
+    public void setValoresPadrao(){
+        if(this.j.jogador == 1){
+            valor = Integer.MIN_VALUE+1;
+
+        }else{
+            valor = valor = Integer.MAX_VALUE-1;
+        }
     }
     public Nodo(Nodo n){
         
@@ -82,19 +90,7 @@ public class Nodo {
     public void setValor(double valor){
         this.valor = valor;
     }
-    public void setValor(boolean vezJogada){
-         if(vezJogada){
-            //jogada MAX            
-            this.j = new Jogada(0);
-            valor = Integer.MIN_VALUE;
-            
-        }else{
-            //jogada MIN
-            this.j = new Jogada(1);
-            valor = Integer.MAX_VALUE;
-        }
-        
-    }
+    
     public void setFolha(boolean valor){
         this.folha = valor;
     }
@@ -106,8 +102,8 @@ public class Nodo {
     }
 
     boolean getJogadorAtual() {
-        //se valor == 0, entao é a IA, se nao o humano
-        return this.j.jogador == 0;
+        //se valor == 1, entao é a humano, se nao a ia
+        return this.j.jogador == 1;
     }
 
     double getAlfa() {
@@ -125,12 +121,8 @@ public class Nodo {
     void setBeta(double d) {
         this.beta = d;
     }
-    
-    
-    
-    
-    
-    
-    
-    
+
+    public ArrayList<Nodo> getFilhos() {
+        return new ArrayList<>(this.filhos);
+    }
 }

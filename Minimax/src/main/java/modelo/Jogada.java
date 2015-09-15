@@ -5,6 +5,8 @@
  */
 package modelo;
 
+import java.util.Arrays;
+
 /**
  *
  * @author rr
@@ -29,19 +31,26 @@ public class Jogada {
         this.jogador = _jogador;
     }
     public Jogada(int[][] tabuleiro, int _jogador, int linha, int coluna){
-        this.posicaoJogada = tabuleiro;
+        posicaoJogada = new int[tabuleiro.length][tabuleiro[0].length];
+        copyJogada(tabuleiro);
         this.jogador = _jogador;
         this.colunaOrigem = coluna;
         this.linhaOrigem = linha;
     }
     
     public Jogada(int[][] tabuleiro, int _jogador){
-        this.posicaoJogada = tabuleiro;
+        posicaoJogada = new int[tabuleiro.length][tabuleiro[0].length];
+        copyJogada(tabuleiro);
         this.jogador = _jogador;
     }
     public int obterProximoJogador(){
-        
         return this.jogador == 1 ? 2 : 1;
+    }
+    public void copyJogada(int[][] tabuleiro){
+         for(int i = 0; i < tabuleiro.length;i++){
+             System.arraycopy(tabuleiro[i], 0, this.posicaoJogada[i], 0, tabuleiro[i].length);
+        }
+        
     }
     
         

@@ -21,7 +21,7 @@ public class Sequencia {
     }
 
     //passar por todo o array de identificadores para criar uma determinada sequencia (tiposequencia)
-    synchronized private void verificaCasas(int ordem, int[][] tabuleiro) {
+    synchronized public void verificaCasas(int ordem, int[][] tabuleiro) {
 
         ArrayList<ThreadCalculoMatriz> thread = new ArrayList<>();
         thread.add(new ThreadCalculoMatriz(ordem, TipoThread.LINHA, tabuleiro));

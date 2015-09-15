@@ -10,11 +10,13 @@ package modelo;
  * @author rr
  */
 public class Tabuleiro {
+
     private boolean jogadorAtual;
-        public boolean vezHumano;
+    public boolean vezHumano;
     public int[][] casasDoTabuleiro = new int[15][15];
     int qttLinhas, qttColunas;
     public static Tabuleiro instancia;
+    public int hX, hY;
 
     public static Tabuleiro retornaInstancia(boolean vezHumano) {
         if (instancia == null) {
@@ -22,7 +24,8 @@ public class Tabuleiro {
         }
         return instancia;
     }
-    public Tabuleiro(int linha, int coluna, boolean vezHumano){
+
+    public Tabuleiro(int linha, int coluna, boolean vezHumano) {
         this.vezHumano = vezHumano;
         casasDoTabuleiro = new int[linha][coluna];
     }
@@ -33,12 +36,39 @@ public class Tabuleiro {
         qttColunas = 15;
         adicionarCasas();
     }
-
+    public void executaMinimax(){
+        if(!vezHumano){
+            Nodo raiz = new Nodo(0);
+            raiz.setRaiz(true);
+            Jogada j = new Jogada(casasDoTabuleiro, obterJogador(), hX, hY);
+            raiz.j = j;
+            raiz.setValoresPadrao();
+            Minimax m = new Minimax(4, qttLinhas, 2);
+            m.minimax(raiz, raiz, this, 0);
+            procuraJogadaRaiz(raiz);
+        }
+    }
+    /*A partir da raiz obter a proxima jogada a ser realizada
+    */
+    public void procuraJogadaRaiz(Nodo raiz){
+        for (Nodo filho : raiz.getFilhos()) {            
+            if(Double.compare(filho.getValor(), raiz.getValor()) == 0){
+                System.out.println("melhor jogada é humano: "+hX + " "+ hY);
+                System.out.println("melhor jogada é: "+filho.j.linhaOrigem + " "+ filho.j.colunaOrigem);
+                realizarJogada(filho.j.linhaOrigem, filho.j.colunaOrigem);
+                break;
+            }
+        }
+    }
+    
+    public int obterJogador(){
+        return vezHumano == true ? 1 : 2;
+    }
     /**
      * Adiciona todas as casas na matriz
      */
     public final void adicionarCasas() {
-        
+
         for (int x = 0; x < qttLinhas; x++) {
             for (int y = 0; y < qttColunas; y++) {
                 casasDoTabuleiro[x][y] = 0;
@@ -52,6 +82,8 @@ public class Tabuleiro {
         }
         casasDoTabuleiro[x][y] = vezHumano ? 1 : 2;
         vezHumano = !vezHumano;
+        this.hX = x;
+        this.hY = y;
         return true;
     }
 
@@ -75,7 +107,7 @@ public class Tabuleiro {
 
         //verifica na mesma coluna
         for (int i = 0; i < qttLinhas - 1; i++) {
-            if (casasDoTabuleiro[i][aux_y] == casasDoTabuleiro[i + 1][aux_y]  && casasDoTabuleiro[i][aux_y] != 0 ) {
+            if (casasDoTabuleiro[i][aux_y] == casasDoTabuleiro[i + 1][aux_y] && casasDoTabuleiro[i][aux_y] != 0) {
                 contador++;
             } else {
                 contador = 1;
@@ -128,30 +160,29 @@ public class Tabuleiro {
         }
         return false;
     }
-    
-    public void limpar(){
+
+    public void limpar() {
         instancia = null;
     }
 
-    
     public Tabuleiro(int linha, int coluna) {
-    jogadorAtual = true;
-    
-}
 
+        jogadorAtual = true;
 
-    public boolean turnoIA(){
+    }
+
+    public boolean turnoIA() {
         return jogadorAtual;
     }
 
-    public boolean getJogadorAtual(){
+    public boolean getJogadorAtual() {
         return jogadorAtual;
     }
+//true é ia, e false é humano
 
-    public void setJogadorAtual(boolean valor){
-        System.out.println("valor "+valor);
+    public void setJogadorAtual(boolean valor) {
+        System.out.println("valor " + valor);
         this.jogadorAtual = valor;
     }
 
-    
 }

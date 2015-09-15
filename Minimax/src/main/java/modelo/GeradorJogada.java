@@ -22,11 +22,11 @@ public class GeradorJogada {
     public GeradorJogada(int tamanhoTabuleiro) {
         this.indiceMaximo = tamanhoTabuleiro;
     }
-
-    public Nodo criarJogada(int valor) {
-        return null;
-
+    public GeradorJogada(int tamanhoTabuleiro, int _alcanceMaximo){
+        this.indiceMaximo = tamanhoTabuleiro;
+        this.alcanceMaximo = _alcanceMaximo;
     }
+    
     /*A partir da ultima jogada criar jogadas ao redor desse id
      Nodo anterior possui uma jogada associada a ele, e entao obtem-se em que posicao foi realizada a jogada
     
@@ -34,7 +34,8 @@ public class GeradorJogada {
 
     public ArrayList<Nodo> criaJogada(Tabuleiro t, Nodo anterior) {
 
-        int[][] tabTemp = t.casasDoTabuleiro;
+        //int[][] tabTemp = t.casasDoTabuleiro;
+        int[][] tabTemp = anterior.j.posicaoJogada;
         int areaJogadaAux = this.areaJogadas;
         int coordenadaLinha, coordenadaColuna;
         ArrayList<Nodo> jogadasVerticais = new ArrayList<>();
@@ -43,6 +44,7 @@ public class GeradorJogada {
         ArrayList<Nodo> jogadasDiagonalSecundaria = new ArrayList<>();
         ArrayList<Nodo> jogadas = new ArrayList<>();
         jogadasHorizontais = gerarJogadasHorizontal(tabTemp, anterior);
+        
         jogadasVerticais = gerarJogadasVertical(tabTemp, anterior);
         jogadasDiagonalPrincipal = gerarJogadasDiagonalPrincipal(tabTemp, anterior);
         
@@ -75,8 +77,14 @@ public class GeradorJogada {
                 //posicao ainda é válida  
                 if (tab[linhaAux][coordenadaColunaInc] == 0) {
                     Nodo nodo = new Nodo(linhaAux + " " + coordenadaColunaInc);
+                    //jogada na posicao da tabela realizada
                     tab[linhaAux][coordenadaColunaInc] = anterior.j.obterProximoJogador();
                     nodo.j = new Jogada(tab, anterior.j.obterProximoJogador(), linhaAux, coordenadaColunaInc);
+                    //retirar jogada, pois é uma possibilidade. Um clone é criado dentro de Jogada.
+                    tab[linhaAux][coordenadaColunaInc] = 0;
+                    //inicializacao dos valores do nodo -> min ou max
+                    nodo.setValoresPadrao();
+                    //nodo.setValor(!anterior.getJogadorAtual());
                     jogadasValidas.add(nodo);
 
                 }
@@ -89,6 +97,8 @@ public class GeradorJogada {
                     Nodo nodo = new Nodo(linhaAux + " " + coordenadaColunaDec);
                     tab[linhaAux][coordenadaColunaDec] = anterior.j.obterProximoJogador();
                     nodo.j = new Jogada(tab, anterior.j.obterProximoJogador(), linhaAux, coordenadaColunaDec);
+                    tab[linhaAux][coordenadaColunaDec] = 0;
+                    nodo.setValoresPadrao();
                     jogadasValidas.add(nodo);
 
                 }
@@ -123,6 +133,8 @@ public class GeradorJogada {
                     Nodo nodo = new Nodo(coordenadaLinhaInc + " " + colunaAux);
                     tab[coordenadaLinhaInc][colunaAux] = anterior.j.obterProximoJogador();
                     nodo.j = new Jogada(tab, anterior.j.obterProximoJogador(), coordenadaLinhaInc, colunaAux);
+                    tab[coordenadaLinhaInc][colunaAux] = 0;
+                    nodo.setValoresPadrao();
                     jogadasValidas.add(nodo);
 
                 }
@@ -135,6 +147,8 @@ public class GeradorJogada {
                     Nodo nodo = new Nodo(coordenadaLinhaDec + " " + colunaAux);
                     tab[coordenadaLinhaDec][colunaAux] = anterior.j.obterProximoJogador();
                     nodo.j = new Jogada(tab, anterior.j.obterProximoJogador(), coordenadaLinhaDec, colunaAux);
+                    tab[coordenadaLinhaDec][colunaAux] = 0;
+                    nodo.setValoresPadrao();
                     jogadasValidas.add(nodo);
 
                 }
@@ -170,6 +184,8 @@ public class GeradorJogada {
                     Nodo nodo = new Nodo(coordenadaInc + " " + coordenadaInc);
                     tab[coordenadaInc][coordenadaInc] = anterior.j.obterProximoJogador();
                     nodo.j = new Jogada(tab, anterior.j.obterProximoJogador(), coordenadaInc, coordenadaInc);
+                    tab[coordenadaInc][coordenadaInc] = 0;
+                    nodo.setValoresPadrao();
                     jogadasValidas.add(nodo);
 
                 }
@@ -182,6 +198,8 @@ public class GeradorJogada {
                     Nodo nodo = new Nodo(coordenadaDec + " " + coordenadaDec);
                     tab[coordenadaDec][coordenadaDec] = anterior.j.obterProximoJogador();                    
                     nodo.j = new Jogada(tab, anterior.j.obterProximoJogador(), coordenadaDec, coordenadaDec);
+                    tab[coordenadaDec][coordenadaDec] = 0;                    
+                    nodo.setValoresPadrao();
                     jogadasValidas.add(nodo);
 
                 }
@@ -253,15 +271,16 @@ public class GeradorJogada {
     
 
     /*TODO: mudar metodos para algo mais generico e terminar de fazer metodo para diagonal secundaria.
-
+    */
     public static void main(String[] args) {
-        GeradorJogada gj = new GeradorJogada(15);
+        //set indice maximo
+        GeradorJogada gj = new GeradorJogada(5);
         Nodo raiz = new Nodo(1, true);
         Jogada j = new Jogada(2);
-        j.colunaOrigem = 7;
-        j.linhaOrigem = 7;
+        j.colunaOrigem = 3;
+        j.linhaOrigem = 0;
         raiz.j = j;
-        Tabuleiro t = new Tabuleiro(15, 15, true);
+        Tabuleiro t = new Tabuleiro(1, 8, true);
         //t.realizarJogada(0, 6);
         //t.realizarJogada(0, 3);
 //        gj.gerarJogadasVertical(t.casasDoTabuleiro, raiz);
@@ -269,6 +288,6 @@ public class GeradorJogada {
       //  gj.gerarJogadasDiagonalPrincipal(t.casasDoTabuleiro, raiz);
         gj.criaJogada(t, raiz);
 
-    }*/
+    }
 
 }

@@ -24,16 +24,23 @@ public class Minimax {
         this.gj = new GeradorJogada(15);
 
     }
+    
+    public Minimax(int profundidade, int tamanho,int alcanceMaximoBusca) {
+        this.profundidadeMaxima = profundidade;
+        this.f = new FuncaoUtilidade();
+        this.gj = new GeradorJogada(tamanho,alcanceMaximoBusca);
+
+    }
 
     public void minimax(Nodo anterior, Nodo n, Tabuleiro t, int profundidadeAtual) {
         if (n.ehFolha() && !n.ehRaiz()) {
             //mudar o metodo ehFolha e verificar se é fim de jogo ou nao!!!
             n.setPai(anterior);
-            n.setValor(f.valorNodo(n, t));
+            n.setValor(f.valorNodo(n, turno));
         } else {
             if (profundidadeAtual == profundidadeMaxima) {
                 n.setPai(anterior);
-                n.setValor(f.valorNodo(n, t));
+                n.setValor(f.valorNodo(n, turno));
                 n.setFolha(true);
 
             } else {
@@ -54,12 +61,13 @@ public class Minimax {
                 
 
                 for (Nodo novoN : nodos){
+                    //nodos devem vir com jogador atual, tabuleiro, e coordenadas atualizados do gerador de jogada.
+                    //aqui atualiza-se apenas os filhos, pai e etc...
                     
-                    //turno só deveria ser atualizado antes do for.    
-                    //ao inves de pegar o jogador do tabuleiro, seria melhor inverter o jogador do nodo pai do novoNodo?
+                    
                     System.out.println("proximo jogador : " + !n.getJogadorAtual());
                     //novoNodo = new Nodo(turno, !n.getJogadorAtual(), false);
-                    novoN.setValor(!n.getJogadorAtual());
+                   // novoN.setValor(!n.getJogadorAtual());
                     int profundidadeAnterior = profundidadeAtual;
                     inicializaValorNodo(novoN, n);
                     //n.setFilho(novaJogada);
@@ -69,7 +77,7 @@ public class Minimax {
                     int comparacao = Double.compare(n.getValor(), novoN.getValor());
                     //n.getValor() < novoNodo.getValor()
                     /*Inicio das possiveis podas. Atualizacao de alfa só em jogadas MAX e att de beta em jogadas MIN.*/
-                    if (n.getJogador() == 0) {
+                    if (n.getJogador() == 1) {
                         //se o valor do novoNodo for mais relevante que o alfa anterior, entao é preciso atualizar o alfa antecessor.
                         if (novoN.getValor() > n.getAlfa()) {
                             n.setAlfa(novoN.getValor());
@@ -83,6 +91,7 @@ public class Minimax {
                         }
 
                     } else {
+                     
                         if (novoN.getValor() < n.getBeta()) {
                             n.setBeta(novoN.getValor());
                         }
@@ -121,13 +130,21 @@ public class Minimax {
      */
    public static void main(String[] args) {
 
-        Minimax m = new Minimax(2);
-        Jogada j = new Jogada(0);
+        Minimax m = new Minimax(2,3,2);
+        Jogada j = new Jogada(2);
+        j.colunaOrigem = 1;
+        j.linhaOrigem = 1;
+        Tabuleiro t = new Tabuleiro(3, 3,false);
+        t.casasDoTabuleiro[1][1] = 2;
+        t.setJogadorAtual(true);
+        j.posicaoJogada = t.casasDoTabuleiro;
+        
+        
 
         Nodo n = new Nodo(0, true, false);
+        n.j = j;
         n.setRaiz(true);
-        Tabuleiro t = new Tabuleiro(3, 3);
-        t.setJogadorAtual(true);
+        
         m.minimax(n, n, t, 0);
 
     }
