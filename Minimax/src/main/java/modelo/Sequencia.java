@@ -1,6 +1,7 @@
 package modelo;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  *
@@ -20,26 +21,40 @@ public class Sequencia {
     }
 
     //passar por todo o array de identificadores para criar uma determinada sequencia (tiposequencia)
-    synchronized private TipoSequencia verificaCasas(int ordem, int[][] tabuleiro) {
+    synchronized private void verificaCasas(int ordem, int[][] tabuleiro) {
 
-        ArrayList<MinhaThreadFofinha> thread = new ArrayList<>();
-        thread.add(new MinhaThreadFofinha(ordem, TipoThread.LINHA, tabuleiro));
-        thread.add(new MinhaThreadFofinha(ordem, TipoThread.COLUNA, tabuleiro));
-        thread.add(new MinhaThreadFofinha(ordem, TipoThread.DIAGONALPRINCIPAL, tabuleiro));
-        //   thread.add(new MinhaThreadFofinha(ordem, TipoThread.DIAGONALSECUNDARIA, tabuleiro));
+        ArrayList<ThreadCalculoMatriz> thread = new ArrayList<>();
+        thread.add(new ThreadCalculoMatriz(ordem, TipoThread.LINHA, tabuleiro));
+        //thread.add(new ThreadCalculoMatriz(ordem, TipoThread.COLUNA, tabuleiro));
+        //thread.add(new ThreadCalculoMatriz(ordem, TipoThread.DIAGONALPRINCIPAL, tabuleiro));
+        //thread.add(new ThreadCalculoMatriz(ordem, TipoThread.DIAGONALSECUNDARIA, tabuleiro));
         int countThreads = 0;
         try {
-            for (MinhaThreadFofinha thread1 : thread) {
-                thread1.run();
+            for (ThreadCalculoMatriz thread1 : thread) {
+                thread1.start();
                 thread1.join();
             }
-        } catch (Exception ex) {
-
+        } catch (Exception ex) {}
+        
+        for (ThreadCalculoMatriz thread1 : thread) {
+            sequenciasMaximasHumano.add(thread1.melhorSequenciaHumano);
+            sequenciasMaximasIA.add(thread1.melhorSequenciaIA);
         }
 
-        return null;
+        
+        Collections.sort(sequenciasMaximasHumano);
+        Collections.sort(sequenciasMaximasIA);
     }
-    /*
+    
+    public TipoSequencia retornaMelhorSequenciaHumano(){
+        return TipoSequencia.retornaTipoAPartirDeValor(sequenciasMaximasHumano.get(sequenciasMaximasHumano.size() - 1), false);
+    }
+    
+    public TipoSequencia retornaMelhorSequenciaIA(){
+        return TipoSequencia.retornaTipoAPartirDeValor(sequenciasMaximasIA.get(sequenciasMaximasIA.size() - 1), false);
+    }
+    
+    
 
     public static void main(String[] args) {
         int[][] matriz = new int[4][4];
@@ -68,6 +83,7 @@ public class Sequencia {
 
         sequencia.verificaCasas(4, matriz);
 
-    }*/
+    }
+   
 
 }

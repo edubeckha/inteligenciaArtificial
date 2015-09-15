@@ -1,6 +1,6 @@
 package modelo;
 
-public class MinhaThreadFofinha extends Thread{
+public class ThreadCalculoMatriz extends Thread {
 
     public int ordem, melhorSequenciaHumano, melhorSequenciaIA;
     int contadorSequenciaIA = 0, contadorSequenciaHumano = 0, pivo = 0;
@@ -8,7 +8,7 @@ public class MinhaThreadFofinha extends Thread{
     public TipoThread tipoThread;
     public int[][] matrizElementos;
 
-    public MinhaThreadFofinha(int nOrdem, TipoThread th, int[][] matriz) {
+    public ThreadCalculoMatriz(int nOrdem, TipoThread th, int[][] matriz) {
         ordem = nOrdem;
         tipoThread = th;
         matrizElementos = matriz;
@@ -69,17 +69,28 @@ public class MinhaThreadFofinha extends Thread{
         System.out.println("IA Diagonal Principal" + melhorSequenciaIA);
     }
 
-    
     //TODO: fazer depois
     private void iteraDiagonalSecundaria() {
+        int linha, coluna = -1;
         for (int i = 0; i < ordem; i++) {
-            contadorSequenciaHumano = 0;
-            contadorSequenciaIA = 0;
-            for (int j = 0; j < ordem; j++) {
-
+            linha = i;
+            for (int j = 0; j < i + 1; j++) {
+                //verificaMatriz(linha--, ++coluna, matrizElementos);
             }
+            coluna = -1;
         }
 
+        for (int i = ordem - 1 ; i >= 0; i--) {
+            coluna = ordem - 1;
+            linha = i ;
+            
+            for(int j = 0; j < (ordem-i); j++){
+                verificaMatriz(linha++, coluna--, matrizElementos);
+            }       
+        }
+
+        System.out.println("humano Diagonal secundaria " + melhorSequenciaHumano);
+        System.out.println("IA Diagonal secundaria" + melhorSequenciaIA);
     }
 
     public void verificaMatriz(int i, int j, int[][] tabuleiro) {

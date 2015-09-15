@@ -11,20 +11,15 @@ package modelo;
  * @author rr
  */
 public class FuncaoUtilidade {
-    private int counter = 4;
+   Sequencia sequencia;
+   public int valorFuncaoUtilidade;
     
-    
+    public FuncaoUtilidade(){
+        sequencia = new Sequencia();
+    }
     public double valorNodo(Nodo n,Tabuleiro t){            
-        double c = counter;
-        counter--;
-        return c;
-       
-        /*
-        if(random > 0.5){
-            return +1;
-        }
-            return -1;
-        */
+        n.setValor(sequencia.retornaMelhorSequenciaIA().retornaValorSequencia() - sequencia.retornaMelhorSequenciaHumano().retornaValorSequencia());
+     return 0;
     }    
         
 }
