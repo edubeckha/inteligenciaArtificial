@@ -165,12 +165,14 @@ public class TelaGomoku extends javax.swing.JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         CasaDoTabuleiro aux = (CasaDoTabuleiro) e.getSource();
         if (tabuleiro.realizarJogada(aux.x, aux.y)) {
-           casasDoTabuleiro[aux.x][aux.y].escolherCasa(!tabuleiro.vezHumano ? Color.WHITE : Color.BLACK);
-            if (tabuleiro.verificaTabuleiro(aux.x, aux.y)) {
+           casasDoTabuleiro[aux.x][aux.y].escolherCasa(Color.WHITE);
+           /* if (tabuleiro.verificaTabuleiro(aux.x, aux.y)) {
                 resultado(aux.ehDoHumano() ? Constantes.venceu : Constantes.perdeu);
-            }
+            }*/
             if(!tabuleiro.vezHumano){
                 tabuleiro.executaMinimax();
+                casasDoTabuleiro[tabuleiro.hX][tabuleiro.hY].escolherCasa(Color.BLACK);
+                
             }
         }
 
