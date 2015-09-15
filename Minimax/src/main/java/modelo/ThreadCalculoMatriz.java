@@ -62,7 +62,7 @@ public class ThreadCalculoMatriz extends Thread {
 
     private void iteraDiagonalPrincipal() {
          int linha, coluna;
-       /* for (int i = 0; i < ordem; i++) {
+        for (int i = 0; i < ordem; i++) {
             linha = 0;
             coluna = (ordem - 1 - i);
             for (int j = 0; j < i + 1; j++) {
@@ -70,7 +70,7 @@ public class ThreadCalculoMatriz extends Thread {
             }
             
         }
-        */
+        
         
          for (int i = 0; i < ordem; i++) {
             linha = (ordem - 1 - i);
@@ -86,10 +86,6 @@ public class ThreadCalculoMatriz extends Thread {
         System.out.println("IA Diagonal Principal" + melhorSequenciaIA);
     }
     
-    
-    
-
-    //TODO: fazer depois
     private void iteraDiagonalSecundaria() {
         int linha, coluna = -1;
         for (int i = 0; i < ordem; i++) {
