@@ -4,19 +4,6 @@
  * and open the template in the editor.
  */
 package LineFollowerSimulator;
-
-import static LineFollowerSimulator.RemoteDriver.host;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.StringTokenizer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import net.sourceforge.jFuzzyLogic.FIS;
-
 /**
  *
  * @author tiago
