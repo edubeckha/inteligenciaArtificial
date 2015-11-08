@@ -60,40 +60,28 @@ public class RegulatorClient implements Runnable {
     }*/
 // ***********************************************************************
     
+
     listenSocket(this.host, this.port);
 	while (socket.isConnected()) {
-            FIS fis = FIS.load("robot.fcl", true); // Load from 'FCL' file
-      try {
-        
-        try {
-            
-            out = new PrintWriter(socket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        } catch (UnknownHostException e) {
-            System.err.println("Don't know about host:"  + host);
-            System.exit(1);
-        } catch (IOException e) {
-            System.err.println("Couldn't get I/O for the connection to: " + host);
-            System.exit(1);
-        }
- 
+      try {        
+        FIS fis = FIS.load("robot.fcl", true);
         BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
         String fromServer;
  
         double sensorEsquerda, sensorDireita;
-        // requisicao da posicao do carrinho verificar se é isso com o carrinho
-        out.println("r");
+        // requisicao da posicao do carrinho verificar se é isso com o carrinho        
         while ((fromServer = in.readLine()) != null) {
         	StringTokenizer st = new StringTokenizer(fromServer);
-        	sensorEsquerda = Double.valueOf(st.nextToken());
-                out.println("r");
+                System.out.println(st.nextToken());
+        	/*sensorEsquerda = Double.valueOf(st.nextToken());
+                
         	sensorDireita = Double.valueOf(st.nextToken());
 
-        	System.out.println("x: " + sensorEsquerda + " y: " + sensorDireita);
+        	System.out.println("x: " + sensorEsquerda + " y: " + sensorDireita);*/
         	
                 //seta os valores para alterar a posicao do robo.
-		fis.setVariable("sensor_left_value", sensorEsquerda);
-                fis.setVariable("sensor_right_value", sensorDireita);
+		/*fis.setVariable("sensor_left_value", 0.35);
+                fis.setVariable("sensor_right_value", 0.35);
                 
 		fis.evaluate();
 
@@ -101,13 +89,13 @@ public class RegulatorClient implements Runnable {
                 double forcaEsquerda = fis.getVariable("motor_force_right").getLatestDefuzzifiedValue();
 		System.out.println("Força esquerda lida: " + forcaEsquerda);
                 System.out.println("Força direita lida: " + forcaDireita);
-
+                            */
         	// envio do comando ao motor
-        	out.println(forcaEsquerda);
-                out.println(forcaDireita);
+        	out.println(0.2);
+                out.println(0.2);
         	
                 //requisicao da posicao do carrinho        	
-        	out.println("r");	
+        	
         }
  
         out.close();

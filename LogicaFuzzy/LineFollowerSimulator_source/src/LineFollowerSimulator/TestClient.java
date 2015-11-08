@@ -15,6 +15,7 @@ public class TestClient {
         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
             public void run() {
                 client.run();
+                client.finish();
                 
                 
             }
