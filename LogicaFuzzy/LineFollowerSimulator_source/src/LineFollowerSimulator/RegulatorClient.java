@@ -61,41 +61,44 @@ public class RegulatorClient implements Runnable {
 // ***********************************************************************
 
         listenSocket(this.host, this.port);
-        while (socket.isConnected()) {
+        FIS fis = FIS.load("robot.fcl", true);
+         while (socket.isConnected()) {
             try {
-                FIS fis = FIS.load("robot.fcl", true);
+                
                 BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
-                String fromServer;
+                String fromServer,valorLido;
 
                 double sensorEsquerda = 0;
                 double sensorDireita = 0;
+                boolean flagLidoEsquerda = false, flagLidoDireita = false;
                 // requisicao da posicao do carrinho verificar se é isso com o carrinho        
-                while ((fromServer = in.readLine()) != null) {
-                    StringTokenizer st = new StringTokenizer(fromServer);
-                    if (st.nextToken().equalsIgnoreCase("infinity")) {
-                        sensorEsquerda = 2;
-                    }
+                
+                while ((valorLido = in.readLine()) != null) {
+                    //StringTokenizer st = new StringTokenizer(fromServer);
                     
-                    st = new StringTokenizer(in.readLine());
-                    if (st.nextToken().equalsIgnoreCase("-infinity")) {
+                    if (valorLido.equalsIgnoreCase("infinity")) {
+                        sensorEsquerda = 2;
+                    }                    
+                    
+                    if (valorLido.equalsIgnoreCase("-infinity")) {
                         sensorDireita = -2;
                     } else {
 
                 //verificar casos opostos de infinity                 
-                        sensorEsquerda = Double.valueOf(st.nextToken());
-
-                        sensorDireita = Double.valueOf(st.nextToken());
+                        sensorEsquerda = Double.valueOf(valorLido);
+                        valorLido = in.readLine();
+                        sensorDireita = Double.valueOf(valorLido);
                     }
                     System.out.println("esq: " + sensorEsquerda + " dir: " + sensorDireita);
 
                     //seta os valores para alterar a posicao do robo.
-                    fis.setVariable("left", 0.0);
-                    fis.setVariable("right", 0.0);
+                    fis.setVariable("sensor_esquerda", 0.0);
+                    fis.setVariable("sensor_direita", 0.0);
 
                     fis.evaluate();
 
-                    double forcaDireita = fis.getVariable("motor_force_left").getLatestDefuzzifiedValue();
-                    double forcaEsquerda = fis.getVariable("motor_force_right").getLatestDefuzzifiedValue();
+                    double forcaDireita = fis.getVariable("motor_esquerda").getLatestDefuzzifiedValue();
+                    double forcaEsquerda = fis.getVariable("motor_direita").getLatestDefuzzifiedValue();
                     System.out.println("Força esquerda lida: " + forcaEsquerda);
                     System.out.println("Força direita lida: " + forcaDireita);
 
@@ -119,6 +122,7 @@ public class RegulatorClient implements Runnable {
             }
         }
     }
+
 
     public void listenSocket(String host, int port) {
         try {
