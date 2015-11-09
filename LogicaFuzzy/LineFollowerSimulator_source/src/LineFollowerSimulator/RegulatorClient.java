@@ -77,11 +77,11 @@ public class RegulatorClient implements Runnable {
                     //StringTokenizer st = new StringTokenizer(fromServer);
                     
                     if (valorLido.equalsIgnoreCase("infinity")) {
-                        sensorEsquerda = 2;
+                        sensorEsquerda = 1;
                     }                    
                     
                     if (valorLido.equalsIgnoreCase("-infinity")) {
-                        sensorDireita = -2;
+                        sensorDireita = -1;
                     } else {
 
                 //verificar casos opostos de infinity                 
@@ -92,8 +92,8 @@ public class RegulatorClient implements Runnable {
                     System.out.println("esq: " + sensorEsquerda + " dir: " + sensorDireita);
 
                     //seta os valores para alterar a posicao do robo.
-                    fis.setVariable("sensor_esquerda", 0.0);
-                    fis.setVariable("sensor_direita", 0.0);
+                    fis.setVariable("sensor_esquerda", sensorEsquerda);
+                    fis.setVariable("sensor_direita", sensorDireita);
 
                     fis.evaluate();
 
@@ -103,8 +103,8 @@ public class RegulatorClient implements Runnable {
                     System.out.println("Força direita lida: " + forcaDireita);
 
                     // envio do comando ao motor
-                    out.println(0.2);
-                    out.println(0.2);
+                    out.println(0.1);
+                    out.println(0.0);
 
                 //requisicao da posicao do carrinho        	
                 }
@@ -113,7 +113,7 @@ public class RegulatorClient implements Runnable {
                 in.close();
                 stdIn.close();
 
-                double drive = 0; // computar usando fazzy
+                
 
                 //out.println(drive);
             } catch (IOException ex) {
