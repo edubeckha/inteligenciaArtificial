@@ -12,28 +12,35 @@ VAR_OUTPUT
 END_VAR
 
 FUZZIFY sensor_esquerda
+	TERM extreme_left := (2,0) (4,1);
     TERM left := (0.5, 0) (2, 1);
-    TERM center := (-2, 0) (0,1) (2, 0);   
+    TERM center := (-2, 0) (0,1) (2, 0);
+	TERM right := (-2 ,1)(-0.5 , 0);
+
 END_FUZZIFY
 
 FUZZIFY sensor_direita
+	TERM extreme_right := (-4, 1) (-2, 0);
     TERM right := (0.5, 0) (2, 1);
-    TERM center := (-2, 0) (0,1) (2, 0);   
+    TERM center := (-2, 0) (0,1) (2, 0);
+	TERM left := (-2 ,1) (-0.5 , 0);
 END_FUZZIFY
 
 
 DEFUZZIFY motor_esquerda
 	TERM left :=  (0,0) (0.2, 1);
-	TERM none := (0.1,1);
+	TERM none := (-2,0)(0.5,1) (2,0);
 	TERM right := (-0.2, 1) (0,0);
+	TERM panic_mode := (-3, 1)(-2,0)(-0.02, 0) (0,0) (0.02, 0) (2,0) (3,1)
     METHOD : COG;
     DEFAULT := 0;
 END_DEFUZZIFY
 
 DEFUZZIFY motor_direita
 	TERM left := (0,0) (0.2, 1);
-	TERM none := (0.1,1);
+	TERM none := (-0.2,0)(0,1) (0.2,0);
 	TERM right := (-0.2, 1) (0,0);
+	TERM panic_mode := (-3, 1)(-2,0)(-0.02, 0) (0,0) (0.02, 0) (2,0) (3,1)
   /*  TERM left := (-1.75, 0) (-1, 1) (-0.25, 0); 
     TERM none := (-0.25, 0) (0, 1) (0.25, 0); 
     TERM right := (0.25, 0) (1, 1) (1.75, 0); 
@@ -57,8 +64,17 @@ RULEBLOCK Rules
     RULE 3 : IF sensor_esquerda IS center AND sensor_direita IS center 
                 THEN motor_esquerda IS none;
 
-    RULE 4 : IF sensor_esquerda IS left AND sensor_direita IS right 
+    RULE 4 : IF sensor_esquerda IS center AND sensor_direita IS center
                 THEN motor_direita IS left;
+	RULE 5 : IF sensor_esquerda IS extreme_left AND sensor_direita IS extreme_right
+				THEN motor_esquerda IS panic_mode;
+	RULE 6 : IF sensor_esquerda IS extreme_left AND sensor_direita IS extreme_right
+				THEN motor_direita IS panic_mode;
+	
+	RULE 7 : IF sensor_esquerda IS extreme_left AND sensor_direita IS left
+				THEN motor_esquerda IS none;
+	RULE 8 : IF sensor_esquerda IS extreme_left AND sensor_direita IS left
+				THEN motor_direita IS right;
 
 
 

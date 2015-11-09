@@ -97,19 +97,20 @@ public class RegulatorClient implements Runnable {
                     fis.setVariable("sensor_direita", sensorDireita);
 
                     fis.evaluate();
+                    
 
                     System.out.println("PEGANDO NONONONONO " + fis.getVariable("motor_esquerda").getValue());
                     double forcaEsquerda = fis.getVariable("motor_esquerda").getLatestDefuzzifiedValue();
                     double forcaDireita = fis.getVariable("motor_direita").getLatestDefuzzifiedValue();
                     System.out.println("Força esquerda lida: " + forcaEsquerda);
                     System.out.println("Força direita lida: " + forcaDireita);
-
+/*
                     for (Rule r : fis.getFunctionBlock("tipper").getFuzzyRuleBlock("No1").getRules()) {
                         System.out.println(r);
                     }
                 
-
-                // envio do comando ao motor
+*/
+                // envio do comando ao motor                
                 out.println(forcaEsquerda);
                 out.println(forcaDireita);
 
