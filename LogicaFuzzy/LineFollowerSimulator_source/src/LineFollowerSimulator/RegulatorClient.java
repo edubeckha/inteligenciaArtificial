@@ -16,6 +16,7 @@ import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.sourceforge.jFuzzyLogic.FIS;
+import net.sourceforge.jFuzzyLogic.rule.Rule;
 
 /**
  *
@@ -62,29 +63,29 @@ public class RegulatorClient implements Runnable {
 
         listenSocket(this.host, this.port);
         FIS fis = FIS.load("robot.fcl", true);
-         while (socket.isConnected()) {
+        while (socket.isConnected()) {
             try {
-                
+
                 BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
-                String fromServer,valorLido;
+                String fromServer, valorLido;
 
                 double sensorEsquerda = 0;
                 double sensorDireita = 0;
                 boolean flagLidoEsquerda = false, flagLidoDireita = false;
                 // requisicao da posicao do carrinho verificar se é isso com o carrinho        
-                
+
                 while ((valorLido = in.readLine()) != null) {
                     //StringTokenizer st = new StringTokenizer(fromServer);
-                    
+
                     if (valorLido.equalsIgnoreCase("infinity")) {
                         sensorEsquerda = 1;
-                    }                    
-                    
+                    }
+
                     if (valorLido.equalsIgnoreCase("-infinity")) {
                         sensorDireita = -1;
                     } else {
 
-                //verificar casos opostos de infinity                 
+                        //verificar casos opostos de infinity                 
                         sensorEsquerda = Double.valueOf(valorLido);
                         valorLido = in.readLine();
                         sensorDireita = Double.valueOf(valorLido);
@@ -97,34 +98,37 @@ public class RegulatorClient implements Runnable {
 
                     fis.evaluate();
 
-                    double forcaDireita = fis.getVariable("motor_esquerda").getLatestDefuzzifiedValue();
-                    double forcaEsquerda = fis.getVariable("motor_direita").getLatestDefuzzifiedValue();
+                    System.out.println("PEGANDO NONONONONO " + fis.getVariable("motor_esquerda").getValue());
+                    double forcaEsquerda = fis.getVariable("motor_esquerda").getLatestDefuzzifiedValue();
+                    double forcaDireita = fis.getVariable("motor_direita").getLatestDefuzzifiedValue();
                     System.out.println("Força esquerda lida: " + forcaEsquerda);
                     System.out.println("Força direita lida: " + forcaDireita);
 
-                    // envio do comando ao motor
-                    out.println(0.1);
-                    out.println(0.0);
-
-                //requisicao da posicao do carrinho        	
-                }
-
-                out.close();
-                in.close();
-                stdIn.close();
-
+                    for (Rule r : fis.getFunctionBlock("tipper").getFuzzyRuleBlock("No1").getRules()) {
+                        System.out.println(r);
+                    }
                 
 
-                //out.println(drive);
-            } catch (IOException ex) {
+                // envio do comando ao motor
+                out.println(forcaEsquerda);
+                out.println(forcaDireita);
+
+                //requisicao da posicao do carrinho        	
+            }
+
+            out.close();
+            in.close();
+            stdIn.close();
+
+            //out.println(drive);
+        }catch (IOException ex) {
                 Logger.getLogger(RegulatorClient.class.getName()).log(Level.SEVERE, null, ex);
                 break;
             }
-        }
     }
+}
 
-
-    public void listenSocket(String host, int port) {
+public void listenSocket(String host, int port) {
         try {
             socket = new Socket(host, port);
             out = new PrintWriter(socket.getOutputStream(), true);
@@ -143,9 +147,13 @@ public class RegulatorClient implements Runnable {
         try {
             if (socket != null) {
                 socket.close();
-            }
+            
+
+}
         } catch (IOException ex) {
-            Logger.getLogger(RegulatorClient.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RegulatorClient.class  
+
+.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
