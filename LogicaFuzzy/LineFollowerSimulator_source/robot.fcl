@@ -1,30 +1,30 @@
 FUNCTION_BLOCK FuzzyRobot
 
 VAR_INPUT
-    sensor_left_value : REAL;
-    sensor_right_value : REAL;
+    sensor_esquerda : REAL;
+    sensor_direita : REAL;
 
 END_VAR
 
 VAR_OUTPUT
-    motor_force_left : REAL;
-    motor_force_right : REAL;
+    motor_esquerda : REAL;
+    motor_direita : REAL;
 END_VAR
 
-FUZZIFY sensor_left_value
-    TERM left := (-0.375, 0) (0, 1) (0.375, 0);
-    TERM leftCenter := (0.25, 0) (0.375, 1) (0.5, 0);
-    TERM center := (0.375, 0) (0.5, 1) (0.625, 0);   
+FUZZIFY sensor_esquerda
+    TERM left := (0.5, 0)(2, 1);
+    TERM center := (-0.05, 0) (0.05, 0);   
+
 END_FUZZIFY
 
-FUZZIFY sensor_right_value
+FUZZIFY sensor_direita
     TERM center := (0.375, 0) (0.5, 1) (0.625, 0);
     TERM rightCenter := (0.5, 0) (0.625, 1) (0.75, 0);
     TERM right := (0.625, 0) (1, 1) (1.375, 0);
 END_FUZZIFY
 
 
-DEFUZZIFY motor_force_left
+DEFUZZIFY motor_esquerda
     TERM left := (-1.75, 0) (-1, 1) (-0.25, 0); 
     TERM leftCenter := (-0.5, 0) (-0.25, 1) (0, 0); 
     TERM none := (-0.25, 0) (0, 1) (0.25, 0); 
@@ -35,7 +35,7 @@ DEFUZZIFY motor_force_left
     DEFAULT := 0;
 END_DEFUZZIFY
 
-DEFUZZIFY motor_force_right
+DEFUZZIFY motor_direita
     TERM left := (-1.75, 0) (-1, 1) (-0.25, 0); 
     TERM leftCenter := (-0.5, 0) (-0.25, 1) (0, 0); 
     TERM none := (-0.25, 0) (0, 1) (0.25, 0); 
@@ -52,18 +52,18 @@ RULEBLOCK Rules
     AND : MIN;
     OR : MAX;
 
-    RULE 1 : IF sensor_left_value IS left AND sensor_right_value IS left 
-                THEN motor_force_left IS right;
+    RULE 1 : IF sensor_esquerda IS left AND sensor_direita IS right 
+                THEN motor_esquerda IS right;
     
-    RULE 2 : IF sensor_left_value IS left AND sensor_right_value IS right 
-                THEN motor_force_right IS none;
+//    RULE 2 : IF sensor_left_value IS left AND sensor_right_value IS right 
+  //              THEN motor_force_right IS none;
 
 
-    RULE 3 : IF sensor_left_value IS right AND sensor_right_value IS right 
-                THEN motor_force_right IS left;
+//    RULE 3 : IF sensor_left_value IS right AND sensor_right_value IS right 
+  //              THEN motor_force_right IS left;
 
-    RULE 4 : IF sensor_left_value IS right AND sensor_right_value IS left 
-                THEN motor_force_left IS right;
+    //RULE 4 : IF sensor_left_value IS right AND sensor_right_value IS left 
+      //          THEN motor_force_left IS right;
 
 
 
