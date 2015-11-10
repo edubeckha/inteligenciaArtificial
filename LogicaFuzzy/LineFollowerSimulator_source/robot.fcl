@@ -14,37 +14,43 @@ END_VAR
 FUZZIFY sensor_esquerda
 	TERM extreme_left := (2,0) (4,1);
     TERM left := (0.5, 0) (2, 1);
+	TERM left_center := (0,0) (0.5, 1);
     TERM center := (-2, 0) (0,1) (2, 0);
+	TERM right_center := (-0.5, 1) (0, 0);
 	TERM right := (-2 ,1)(-0.5 , 0);
 
 END_FUZZIFY
 
 FUZZIFY sensor_direita
-	TERM extreme_right := (-4, 1) (-2, 0);
+	TERM extreme_right := (2, 0) (4, 1);
     TERM right := (0.5, 0) (2, 1);
+	TERM right_center := (0, 0)(0.5, 1);
     TERM center := (-2, 0) (0,1) (2, 0);
+	TERM left_center := (0, 0) (0.5, 1);
 	TERM left := (-2 ,1) (-0.5 , 0);
 END_FUZZIFY
 
 
 DEFUZZIFY motor_esquerda
-	TERM left :=  (0,0) (0.2, 1);
-	TERM none := (-2,0)(0.5,1) (2,0);
-	TERM right := (-0.2, 1) (0,0);
-	TERM panic_mode := (-3, 1)(-2,0)(-0.02, 0) (0,0) (0.02, 0) (2,0) (3,1)
+	TERM left :=  (0.25,0) (0.75, 1);
+	TERM few_left := (0.1, 0)(0.25, 1);
+	TERM none := (0.5,1);
+	TERM few_right := (-0.25, 1) (-0.1, 0);
+	TERM right := (-0.75, 1) (-0.25,0);
+	TERM panic_mode := (-0.95, 1)(-0.25,0)(-0.02, 0) (0,0);
+
     METHOD : COG;
     DEFAULT := 0;
 END_DEFUZZIFY
 
 DEFUZZIFY motor_direita
-	TERM left := (0,0) (0.2, 1);
-	TERM none := (-0.2,0)(0,1) (0.2,0);
-	TERM right := (-0.2, 1) (0,0);
-	TERM panic_mode := (-3, 1)(-2,0)(-0.02, 0) (0,0) (0.02, 0) (2,0) (3,1)
-  /*  TERM left := (-1.75, 0) (-1, 1) (-0.25, 0); 
-    TERM none := (-0.25, 0) (0, 1) (0.25, 0); 
-    TERM right := (0.25, 0) (1, 1) (1.75, 0); 
-*/
+	TERM left :=  (0.25,0) (0.75, 1);
+	TERM few_left := (0.1, 0)(0.25, 1);
+	TERM none := (0.5,1);
+	TERM few_right := (-0.25, 1) (-0.1, 0);
+	TERM right := (-0.75, 1) (-0.25,0);
+	TERM panic_mode := (0.02, 0) (0.25,0) (0.95,1);
+
     METHOD : COG;
     DEFAULT := 0;
 END_DEFUZZIFY
@@ -54,27 +60,69 @@ RULEBLOCK Rules
 
     AND : MIN;
     OR : MAX;
-
+//right e left
     RULE 1 : IF sensor_esquerda IS left AND sensor_direita IS right 
                 THEN motor_esquerda IS none;
 
     RULE 2 : IF sensor_esquerda IS left AND sensor_direita IS right 
                 THEN motor_direita IS none;
-
-    RULE 3 : IF sensor_esquerda IS center AND sensor_direita IS center 
+//left e left
+    RULE 3 : IF sensor_esquerda IS left AND sensor_direita IS left 
                 THEN motor_esquerda IS none;
 
-    RULE 4 : IF sensor_esquerda IS center AND sensor_direita IS center
+    RULE 4 : IF sensor_esquerda IS left AND sensor_direita IS left 
                 THEN motor_direita IS left;
-	RULE 5 : IF sensor_esquerda IS extreme_left AND sensor_direita IS extreme_right
-				THEN motor_esquerda IS panic_mode;
-	RULE 6 : IF sensor_esquerda IS extreme_left AND sensor_direita IS extreme_right
-				THEN motor_direita IS panic_mode;
+//right e right
+    RULE 5 : IF sensor_esquerda IS right AND sensor_direita IS right 
+                THEN motor_esquerda IS right;
+
+    RULE 6 : IF sensor_esquerda IS right AND sensor_direita IS right 
+                THEN motor_direita IS none;
+
+
+//casos cobrindo o left center e right center
+	RULE 7 : IF sensor_esquerda IS left_center AND sensor_direita IS right
+			THEN motor_esquerda IS right;
+	RULE 8: IF sensor_esquerda IS left_center AND sensor_direita IS right
+			THEN motor_direita IS none;
+
+	RULE 9 : IF sensor_esquerda IS left AND sensor_direita IS right_center
+			THEN motor_esquerda IS none;
+	RULE 10: IF sensor_esquerda IS left AND sensor_direita IS right_center
+			THEN motor_direita IS left;
+
+//casos em que o sensor da esquerda é right_center e o sensor da direita é right
+	RULE 15 : IF sensor_esquerda IS left AND sensor_direita IS left_center
+			THEN motor_esquerda IS right;
+	RULE 16: IF sensor_esquerda IS left AND sensor_direita IS left_center
+			THEN motor_direita IS none;
+
+	RULE 17 : IF sensor_esquerda IS right_center AND sensor_direita IS right
+			THEN motor_esquerda IS none;
+	RULE 18: IF sensor_esquerda IS right_center AND sensor_direita IS right
+			THEN motor_direita IS left;
+
+
+	//caso em que o sensor tem tamanho menor
+	RULE 11 : IF sensor_esquerda IS left_center AND sensor_direita IS right_center
+			THEN motor_esquerda IS none;
+	RULE 12: IF sensor_esquerda IS left_center AND sensor_direita IS right_center
+			THEN motor_direita IS none;
+
+//extreme left e extreme right
+
+	RULE 13: IF sensor_esquerda IS extreme_left AND sensor_direita IS extreme_right
+			THEN motor_esquerda IS left;
+	RULE 14: IF sensor_esquerda IS extreme_left AND sensor_direita IS extreme_right
+			THEN motor_direita IS right;
+//tratar casos em que o sensor vira!!!!!!!!!
 	
-	RULE 7 : IF sensor_esquerda IS extreme_left AND sensor_direita IS left
-				THEN motor_esquerda IS none;
-	RULE 8 : IF sensor_esquerda IS extreme_left AND sensor_direita IS left
-				THEN motor_direita IS right;
+ //   RULE 3 : IF sensor_esquerda IS center AND sensor_direita IS center 
+   //             THEN motor_esquerda IS none;
+
+ //   RULE 4 : IF sensor_esquerda IS center AND sensor_direita IS center
+//                THEN motor_direita IS left;
+
 
 
 

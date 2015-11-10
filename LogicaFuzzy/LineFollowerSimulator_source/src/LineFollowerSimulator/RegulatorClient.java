@@ -5,18 +5,16 @@
  */
 package LineFollowerSimulator;
 
-import static LineFollowerSimulator.RemoteDriver.host;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.sourceforge.jFuzzyLogic.FIS;
-import net.sourceforge.jFuzzyLogic.rule.Rule;
 
 /**
  *
@@ -78,11 +76,11 @@ public class RegulatorClient implements Runnable {
                     //StringTokenizer st = new StringTokenizer(fromServer);
 
                     if (valorLido.equalsIgnoreCase("infinity")) {
-                        sensorEsquerda = 1;
+                        sensorEsquerda = 4;
                     }
 
                     if (valorLido.equalsIgnoreCase("-infinity")) {
-                        sensorDireita = -1;
+                        sensorDireita = 4;
                     } else {
 
                         //verificar casos opostos de infinity                 
