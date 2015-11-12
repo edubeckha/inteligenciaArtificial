@@ -75,42 +75,48 @@ public class RegulatorClient implements Runnable {
                 while ((valorLido = in.readLine()) != null) {
                     //StringTokenizer st = new StringTokenizer(fromServer);
 
-                    if (valorLido.equalsIgnoreCase("infinity")) {
-                        sensorEsquerda = 4;
-                    }
-
-                    if (valorLido.equalsIgnoreCase("-infinity")) {
+                    if (valorLido.equalsIgnoreCase("infinity") || valorLido.equalsIgnoreCase("-infinity")) {
                         sensorDireita = 4;
-                    } else {
-
-                        //verificar casos opostos de infinity                 
-                        sensorEsquerda = Double.valueOf(valorLido);
-                        valorLido = in.readLine();
+                    }else{
                         sensorDireita = Double.valueOf(valorLido);
                     }
-                    System.out.println("esq: " + sensorEsquerda + " dir: " + sensorDireita);
+                    valorLido = in.readLine();
+                    if (valorLido.equalsIgnoreCase("-infinity") || valorLido.equalsIgnoreCase("infinity")) {
+                        sensorEsquerda = 4;
+                    } else {
+                        
+                        
+                        sensorEsquerda = Double.valueOf(valorLido);
+                        //verificar casos opostos de infinity                 
+                        
+                        
+                    }
+                    System.out.println("2-esq: " + sensorEsquerda + " 1-dir: " + sensorDireita);
 
                     //seta os valores para alterar a posicao do robo.
-                    fis.setVariable("sensor_esquerda", sensorEsquerda);
                     fis.setVariable("sensor_direita", sensorDireita);
+                    fis.setVariable("sensor_esquerda", sensorEsquerda);
 
                     fis.evaluate();
-                    
+                    sensorDireita = 0;
+                    sensorEsquerda = 0;
 
                     System.out.println("PEGANDO NONONONONO " + fis.getVariable("motor_esquerda").getValue());
-                    double forcaEsquerda = fis.getVariable("motor_esquerda").getLatestDefuzzifiedValue();
                     double forcaDireita = fis.getVariable("motor_direita").getLatestDefuzzifiedValue();
-                    System.out.println("Força esquerda lida: " + forcaEsquerda);
+                    double forcaEsquerda = fis.getVariable("motor_esquerda").getLatestDefuzzifiedValue();
                     System.out.println("Força direita lida: " + forcaDireita);
+                    System.out.println("Força esquerda lida: " + forcaEsquerda);
+
 /*
                     for (Rule r : fis.getFunctionBlock("tipper").getFuzzyRuleBlock("No1").getRules()) {
                         System.out.println(r);
                     }
                 
 */
-                // envio do comando ao motor                
-                out.println(forcaEsquerda);
+                // envio do comando ao motor
                 out.println(forcaDireita);
+                out.println(forcaEsquerda);
+               
 
                 //requisicao da posicao do carrinho        	
             }
@@ -150,9 +156,7 @@ public void listenSocket(String host, int port) {
 
 }
         } catch (IOException ex) {
-            Logger.getLogger(RegulatorClient.class  
-
-.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RegulatorClient.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
