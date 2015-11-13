@@ -70,11 +70,13 @@ public class RegulatorClient implements Runnable {
                 double sensorEsquerda = 0;
                 double sensorDireita = 0;
                 boolean flagLidoEsquerda = false, flagLidoDireita = false;
+                                      
                 // requisicao da posicao do carrinho verificar se é isso com o carrinho        
-
+                out.println(0);
+                out.println(0);  
                 while ((valorLido = in.readLine()) != null) {
                     //StringTokenizer st = new StringTokenizer(fromServer);
-
+                    
                     if (valorLido.equalsIgnoreCase("infinity") || valorLido.equalsIgnoreCase("-infinity")) {
                         sensorDireita = 4;
                     }else{
@@ -114,6 +116,7 @@ public class RegulatorClient implements Runnable {
                 
 */
                 // envio do comando ao motor
+                
                 out.println(forcaDireita);
                 out.println(forcaEsquerda);
                

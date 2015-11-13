@@ -48,7 +48,7 @@ END_DEFUZZIFY
 DEFUZZIFY motor_direita
 	TERM left :=  (0.25,0) (0.75, 1);
 	TERM few_left := (0.1, 0)(0.25, 1);
-	TERM none := (0, 0)(0.75,1);
+	TERM none := (0, 0)(0.5,1);
 	TERM few_right := (-0.25, 1) (-0.1, 0);
 	TERM right := (-0.75, 1) (-0.25,0);
 	TERM panic_mode := (0.02, 0) (0.25,0) (0.95,1);
@@ -118,7 +118,7 @@ RULEBLOCK Rules
 	RULE 19: IF sensor_esquerda IS extreme_left AND sensor_direita IS right
 			THEN motor_esquerda IS left;
 	RULE 20: IF sensor_direita IS left AND sensor_direita IS extreme_right
-			THEN motor_direita IS right;
+			THEN motor_esquerda IS few_right;
 
 //tratar casos em que o sensor vira!!!!!!!!!
 	
