@@ -68,78 +68,57 @@ RULEBLOCK Rules
 
    
 //left e left
-    RULE 3 : IF sensor_esquerda IS left AND sensor_direita IS left 
+    RULE 2 : IF sensor_esquerda IS left AND sensor_direita IS left 
                 THEN motor_esquerda IS left;
 
-    RULE 4 : IF sensor_esquerda IS left AND sensor_direita IS left 
+    RULE 3 : IF sensor_esquerda IS left AND sensor_direita IS left 
                 THEN motor_direita IS none;
 //right e right
-    RULE 5 : IF sensor_esquerda IS right AND sensor_direita IS right 
+    RULE 4 : IF sensor_esquerda IS right AND sensor_direita IS right 
                 THEN motor_esquerda IS none;
 
-    RULE 6 : IF sensor_esquerda IS right AND sensor_direita IS right 
+    RULE 5 : IF sensor_esquerda IS right AND sensor_direita IS right 
                 THEN motor_direita IS right;
 
 
 //casos cobrindo o left center e right center
-	RULE 7 : IF sensor_esquerda IS left_center AND sensor_direita IS right
+	RULE 6 : IF sensor_esquerda IS left_center AND sensor_direita IS right
 			THEN motor_esquerda IS few_right;
-	RULE 8: IF sensor_esquerda IS left_center AND sensor_direita IS right
+	RULE 7: IF sensor_esquerda IS left_center AND sensor_direita IS right
 			THEN motor_direita IS none;
 
-	RULE 9 : IF sensor_esquerda IS left AND sensor_direita IS right_center
+	RULE 8 : IF sensor_esquerda IS left AND sensor_direita IS right_center
 			THEN motor_esquerda IS none;
-	RULE 10: IF sensor_esquerda IS left AND sensor_direita IS right_center
+	RULE 9: IF sensor_esquerda IS left AND sensor_direita IS right_center
 			THEN motor_direita IS few_left;
 
-	RULE 15 : IF sensor_esquerda IS right_center AND sensor_direita IS right
+	RULE 10 : IF sensor_esquerda IS right_center AND sensor_direita IS right
 			THEN motor_esquerda IS none;
-	RULE 16: IF sensor_esquerda IS right_center AND sensor_direita IS right
+	RULE 11: IF sensor_esquerda IS right_center AND sensor_direita IS right
 			THEN motor_direita IS few_right;
 
-	RULE 17 : IF sensor_esquerda IS left AND sensor_direita IS left_center
+	RULE 12 : IF sensor_esquerda IS left AND sensor_direita IS left_center
 			THEN motor_esquerda IS few_left;
-	RULE 18 : IF sensor_esquerda IS left AND sensor_direita IS left_center
+	RULE 13 : IF sensor_esquerda IS left AND sensor_direita IS left_center
 			THEN motor_direita IS none;
 
 
 	//caso em que o sensor tem tamanho menor
-	RULE 11 : IF sensor_esquerda IS left_center AND sensor_direita IS right_center
+	RULE 14 : IF sensor_esquerda IS left_center AND sensor_direita IS right_center
 			THEN motor_esquerda IS none;
 	
 
 //extreme left e extreme right
 
-	RULE 13: IF sensor_esquerda IS extreme_left 
+	RULE 15: IF sensor_esquerda IS extreme_left 
 			THEN motor_esquerda IS right;
 	
 
-//tratar casos em que o sensor vira!!!!!!!!!
-	
- //   RULE 3 : IF sensor_esquerda IS center AND sensor_direita IS center 
-   //             THEN motor_esquerda IS none;
-
- //   RULE 4 : IF sensor_esquerda IS center AND sensor_direita IS center
-//                THEN motor_direita IS left;
-
-	RULE 21: IF sensor_esquerda IS left AND sensor_direita IS center
+	RULE 16: IF sensor_esquerda IS left AND sensor_direita IS center
 			THEN motor_esquerda IS left;
 
-	RULE 24: IF sensor_esquerda IS center AND sensor_direita IS right
+	RULE 17: IF sensor_esquerda IS center AND sensor_direita IS right
 			THEN motor_direita IS right;
-
-
-    
-//    RULE 2 : IF sensor_left_value IS left AND sensor_right_value IS right 
-  //              THEN motor_force_right IS none;
-
-
-//    RULE 3 : IF sensor_left_value IS right AND sensor_right_value IS right 
-  //              THEN motor_force_right IS left;
-
-    //RULE 4 : IF sensor_left_value IS right AND sensor_right_value IS left 
-      //          THEN motor_force_left IS right;
-
 
 
 END_RULEBLOCK
