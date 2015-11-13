@@ -40,7 +40,7 @@ DEFUZZIFY motor_esquerda
 	TERM few_right := (-0.25, 1) (-0.1, 0);
 	TERM right := (-0.75, 1) (-0.25,0);
 	TERM panic_mode := (-0.95, 1)(-0.25,0)(-0.02, 0) (0,0);
-
+	TERM stop :=  (0, 1)(0.5, 0)
     METHOD : COG;
     DEFAULT := 0;
 END_DEFUZZIFY
@@ -52,7 +52,7 @@ DEFUZZIFY motor_direita
 	TERM few_right := (-0.25, 1) (-0.1, 0);
 	TERM right := (-0.75, 1) (-0.25,0);
 	TERM panic_mode := (0.02, 0) (0.25,0) (0.95,1);
-
+	TERM stop :=  (0, 1)(0.5, 0)
     METHOD : COG;
     DEFAULT := 0;
 END_DEFUZZIFY
@@ -128,8 +128,15 @@ RULEBLOCK Rules
  //   RULE 4 : IF sensor_esquerda IS center AND sensor_direita IS center
 //                THEN motor_direita IS left;
 
+	RULE 21: IF sensor_esquerda IS left AND sensor_direita IS center
+			THEN motor_esquerda IS left;
+	RULE 22: IF sensor_esquerda IS left AND sensor_direita IS center
+			THEN motor_direita IS none;
 
-
+	RULE 23: IF sensor_esquerda IS center AND sensor_direita IS right
+			THEN motor_esquerda IS none;
+	RULE 24: IF sensor_esquerda IS center AND sensor_direita IS right
+			THEN motor_direita IS right;
 
 
     
