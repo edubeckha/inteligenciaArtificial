@@ -111,7 +111,7 @@ RULEBLOCK Rules
 //extreme left e extreme right
 
 	RULE 13: IF sensor_esquerda IS extreme_left 
-			THEN motor_esquerda IS left;
+			THEN motor_esquerda IS right;
 	
 
 //tratar casos em que o sensor vira!!!!!!!!!
@@ -124,11 +124,7 @@ RULEBLOCK Rules
 
 	RULE 21: IF sensor_esquerda IS left AND sensor_direita IS center
 			THEN motor_esquerda IS left;
-	RULE 22: IF sensor_esquerda IS left AND sensor_direita IS center
-			THEN motor_direita IS none;
 
-	RULE 23: IF sensor_esquerda IS center AND sensor_direita IS right
-			THEN motor_esquerda IS none;
 	RULE 24: IF sensor_esquerda IS center AND sensor_direita IS right
 			THEN motor_direita IS right;
 
